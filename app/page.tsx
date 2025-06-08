@@ -1,12 +1,19 @@
+import About from "@/components/sections/about";
+import Contact from "@/components/sections/contact";
+import Cta from "@/components/sections/CTA";
+import Features from "@/components/sections/features";
+import Hero from "@/components/sections/hero";
+
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <h1 className="text-4xl font-bold">
-        Sniptic
-      </h1>
-      <p className="mt-4 text-lg">
-        A simple code snippet manager built with Next.js, TypeScript, and Tailwind CSS.
-      </p>
-    </main>
-  );
+    <div className="min-h-screen bg-background">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <Hero />
+        <Features />
+        <About />
+        <Contact />
+        <Cta />
+      </div>
+    </div>
+  )
 }
