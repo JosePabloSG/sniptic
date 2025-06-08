@@ -1,6 +1,6 @@
 export default function Features() {
   return (
-    <section className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="features" className="relative py-24 sm:py-32 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-10 right-1/4 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-700"></div>

@@ -2,7 +2,7 @@
 
 export default function Contact() {
   return (
-    <section className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="contact" className="relative py-24 sm:py-32 overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 left-1/4 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-400"></div>
