@@ -1,8 +1,10 @@
+import { Send } from "lucide-react";
+import { Button } from "../ui/button";
 
 
 export default function Contact() {
   return (
-    <section id="contact" className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="contact" className="relative py-24 sm:py-32 overflow-hidden ">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 left-1/4 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-400"></div>
@@ -139,20 +141,10 @@ export default function Contact() {
                   ></textarea>
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full bg-primary text-primary-foreground px-6 py-4 rounded-xl font-medium hover:bg-primary/90 transition-all focus:outline-none focus:ring-2 focus:ring-primary/20 flex items-center justify-center gap-2 mt-auto"
-                >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-                    />
-                  </svg>
+                <Button type="submit" className="w-full h-10 mt-4 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors">
                   Enviar mensaje
-                </button>
+                  <Send className="ml-2 h-4 w-4 inline-block" />
+                </Button>
               </form>
             </div>
 

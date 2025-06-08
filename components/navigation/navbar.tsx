@@ -35,7 +35,7 @@ export function Navbar() {
             <Button variant="ghost" size="sm" asChild>
               <Link href="/login">Login</Link>
             </Button>
-            <Button size="sm" asChild>
+            <Button size="sm" asChild className="rounded-full">
               <Link href="/signup">Sign up</Link>
             </Button>
           </div>
@@ -56,7 +56,7 @@ export function Navbar() {
                   <Button variant="ghost" asChild onClick={() => setIsOpen(false)}>
                     <Link href="/login">Login</Link>
                   </Button>
-                  <Button asChild onClick={() => setIsOpen(false)}>
+                  <Button asChild onClick={() => setIsOpen(false)} className="rounded-full">
                     <Link href="/signup">Sign up</Link>
                   </Button>
                 </div>

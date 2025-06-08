@@ -15,8 +15,8 @@ export default function Hero() {
         {/* Left Content */}
         <div className="lg:col-span-7 space-y-8">
           <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border bg-primary/5 text-sm text-primary">
-              <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-300 bg-green-100 text-sm text-primary">
+              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
               Nuevo: Prompt Builder contextual con IA
             </div>
 
@@ -46,7 +46,7 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size={'lg'}>Comenzar gratis</Button>
+            <Button size={'lg'} className="rounded-full">Comenzar gratis</Button>
           </div>
         </div>
 
