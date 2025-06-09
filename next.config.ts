@@ -6,7 +6,8 @@ const nextConfig: NextConfig = {
 
   // Configuración de dominio permitido para imágenes si usas Image component
   images: {
-    domains: ['vercel.com'],
+    domains: ['vercel.com', 'https://sniptic.com'],
+
     // Añade otros dominios si necesitas cargar imágenes de ellos
   },
 
