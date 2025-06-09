@@ -4,8 +4,7 @@
   "installCommand": "pnpm install",
   "framework": "nextjs",
   "regions": [
-    "iad1",
-    "gru1"
+    "iad1"
   ],
   "env": {
     "RESEND_API_KEY": "@resend_api_key",
