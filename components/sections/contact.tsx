@@ -1,8 +1,86 @@
+"use client"
 import { Send } from "lucide-react";
 import { Button } from "../ui/button";
+import { useState } from "react";
 
 
 export default function Contact() {
+  // Estados para manejar el formulario
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    company: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: "success" | "error" | null;
+    message: string;
+  }>({
+    type: null,
+    message: ""
+  });
+
+  // Manejar cambios en los campos del formulario
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Enviar formulario
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    // Validar datos básicos
+    if (!formData.name || !formData.email || !formData.message) {
+      setSubmitStatus({
+        type: "error",
+        message: "Por favor completa todos los campos obligatorios."
+      });
+      return;
+    }
+
+    try {
+      setIsSubmitting(true);
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Error al enviar el mensaje");
+      }
+
+      // Éxito: limpiar formulario y mostrar mensaje
+      setFormData({
+        name: "",
+        email: "",
+        company: "",
+        message: ""
+      });
+
+      setSubmitStatus({
+        type: "success",
+        message: "¡Mensaje enviado correctamente! Te contactaremos pronto."
+      });
+    } catch (error) {
+      console.error("Error:", error);
+      setSubmitStatus({
+        type: "error",
+        message: error instanceof Error ? error.message : "Error al enviar el mensaje"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   return (
     <section id="contact" className="relative py-24 sm:py-32">
       {/* Background Elements */}
@@ -56,7 +134,17 @@ export default function Contact() {
                 </div>
               </div>
 
-              <form className="space-y-6 flex-1 flex flex-col">
+              <form className="space-y-6 flex-1 flex flex-col" onSubmit={handleSubmit}>
+                {/* Mensaje de estado */}
+                {submitStatus.type && (
+                  <div className={`p-4 rounded-xl text-sm ${submitStatus.type === "success"
+                      ? "bg-green-50 border border-green-200 text-green-700"
+                      : "bg-red-50 border border-red-200 text-red-700"
+                    }`}>
+                    {submitStatus.message}
+                  </div>
+                )}
+
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-2">
                     <label htmlFor="name" className="text-sm font-medium text-foreground flex items-center gap-2">
@@ -74,8 +162,11 @@ export default function Contact() {
                       type="text"
                       id="name"
                       name="name"
+                      value={formData.name}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none transition-all"
                       placeholder="Tu nombre"
+                      required
                     />
                   </div>
                   <div className="space-y-2">
@@ -94,8 +185,11 @@ export default function Contact() {
                       type="email"
                       id="email"
                       name="email"
+                      value={formData.email}
+                      onChange={handleChange}
                       className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none transition-all"
                       placeholder="tu@email.com"
+                      required
                     />
                   </div>
                 </div>
@@ -116,6 +210,8 @@ export default function Contact() {
                     type="text"
                     id="company"
                     name="company"
+                    value={formData.company}
+                    onChange={handleChange}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none transition-all"
                     placeholder="Tu empresa"
                   />
@@ -135,15 +231,22 @@ export default function Contact() {
                   <textarea
                     id="message"
                     name="message"
+                    value={formData.message}
+                    onChange={handleChange}
                     rows={5}
                     className="w-full px-4 py-3 rounded-xl border border-gray-200 bg-gray-50/50 focus:border-primary focus:ring-2 focus:ring-primary/20 focus:bg-white outline-none transition-all resize-none"
                     placeholder="Cuéntanos en qué podemos ayudarte..."
+                    required
                   ></textarea>
                 </div>
 
-                <Button type="submit" className="w-full h-10 mt-4 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors">
-                  Enviar mensaje
-                  <Send className="ml-2 h-4 w-4 inline-block" />
+                <Button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full h-12 mt-4 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors text-base font-medium"
+                >
+                  {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+                  {!isSubmitting && <Send className="ml-2 h-5 w-5 inline-block" />}
                 </Button>
               </form>
             </div>
