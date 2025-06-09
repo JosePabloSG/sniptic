@@ -34,7 +34,7 @@ export default function Pricing() {
   ]
 
   return (
-    <section id="pricing" className="relative py-24 sm:py-32 overflow-hidden ">
+    <section id="pricing" className="relative py-24 sm:py-32">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-10 w-0.5 h-32 bg-gradient-to-b from-primary/10 to-transparent"></div>

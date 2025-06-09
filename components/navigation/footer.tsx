@@ -1,4 +1,5 @@
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     < footer className="relative bg-gray-50 border-t" >
       {/* Background Elements */}
@@ -90,7 +91,7 @@ export default function Footer() {
         <div className="border-t py-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-6 text-sm text-muted-foreground">
-              <span>© 2024 Sniptic. Todos los derechos reservados.</span>
+              <span>© {currentYear} Sniptic. Todos los derechos reservados.</span>
             </div>
             <div className="flex items-center gap-6 text-sm">
               <a href="#" className="text-muted-foreground hover:text-foreground transition-colors">

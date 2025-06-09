@@ -2,7 +2,7 @@ import { Button } from "../ui/button";
 
 export default function Hero() {
   return (
-    <section id="hero" className="relative py-20 sm:py-32 overflow-hidden">
+    <section id="hero" className="relative py-20 sm:py-32">
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 left-10 w-2 h-2 bg-primary/20 rounded-full animate-pulse"></div>
         <div className="absolute top-40 right-20 w-1 h-1 bg-primary/30 rounded-full animate-pulse delay-1000"></div>

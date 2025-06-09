@@ -1,6 +1,6 @@
 export default function About() {
   return (
-    <section id="about" className="relative py-24 sm:py-32 overflow-hidden">
+    <section id="about" className="relative py-24 sm:py-32">
       {/* Background Elements */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-20 right-1/4 w-1 h-1 bg-primary/20 rounded-full animate-pulse delay-300"></div>
