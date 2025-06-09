@@ -3,6 +3,8 @@ import Contact from "@/components/sections/contact";
 import Cta from "@/components/sections/CTA";
 import Features from "@/components/sections/features";
 import Hero from "@/components/sections/hero";
+import Pricing from "@/components/sections/princing";
+
 
 export default function Home() {
   return (
@@ -11,6 +13,7 @@ export default function Home() {
         <Hero />
         <Features />
         <About />
+        <Pricing />
         <Contact />
         <Cta />
       </div>
