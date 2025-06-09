@@ -18,10 +18,10 @@ export function Navbar() {
         <div className="flex items-center gap-6 md:gap-8">
           <Link href="/" className="flex items-center space-x-2">
             <Image
-              src="/Logo.png"
+              src="/sniptic.svg"
               alt="Sniptic Logo"
-              width={40}
-              height={40}
+              width={32}
+              height={32}
               className="h-10 w-auto"
             />
             <span className="text-xl font-bold tracking-tight">Sniptic</span>

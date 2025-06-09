@@ -15,12 +15,12 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Sniptic | Gestiona tus snippets de código",
+  title: "Sniptic",
   description: "Tu plataforma SaaS moderna y minimalista que revoluciona la forma en que trabajas con snippets de código",
   keywords: ["snippets", "código", "desarrollo", "programación", "SaaS", "herramientas para desarrolladores"],
   creator: "Sniptic",
   openGraph: {
-    title: "Sniptic | Gestiona tus snippets de código",
+    title: "Sniptic",
     description: "Tu plataforma SaaS moderna y minimalista que revoluciona la forma en que trabajas con snippets de código",
     type: "website",
     siteName: "Sniptic",
