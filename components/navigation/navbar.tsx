@@ -33,10 +33,12 @@ export function Navbar() {
         <div className="flex items-center gap-2">
           <div className="hidden md:flex md:items-center md:gap-2">
             <Button variant="ghost" size="sm" asChild>
-              <Link href="/login">Login</Link>
+              <Link href="/login">
+                Iniciar sesión
+              </Link>
             </Button>
             <Button size="sm" asChild className="rounded-full">
-              <Link href="/signup">Sign up</Link>
+              <Link href="/signup">Registrarse</Link>
             </Button>
           </div>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
@@ -54,10 +56,10 @@ export function Navbar() {
                 <NavLinks isMobile setIsOpen={setIsOpen} />
                 <div className="flex flex-col gap-2 pt-4 px-2">
                   <Button variant="ghost" asChild onClick={() => setIsOpen(false)}>
-                    <Link href="/login">Login</Link>
+                    <Link href="/login">Iniciar sesión</Link>
                   </Button>
                   <Button asChild onClick={() => setIsOpen(false)} className="rounded-full">
-                    <Link href="/signup">Sign up</Link>
+                    <Link href="/signup">Registrarse</Link>
                   </Button>
                 </div>
               </nav>
