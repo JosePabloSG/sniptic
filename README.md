@@ -1,8 +1,25 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sniptic
 
-## Getting Started
+Este es un proyecto [Next.js](https://nextjs.org) de Sniptic con funcionalidades de contacto por email.
 
-First, run the development server:
+## Primeros pasos
+
+Primero, configura las variables de entorno:
+
+```bash
+# Copia el archivo de ejemplo
+cp .env.example .env.local
+# Edita el archivo con tus propias credenciales
+```
+
+### Variables de entorno requeridas
+
+- `RESEND_API_KEY`: API Key de [Resend](https://resend.com) para enviar emails
+- `EMAIL_TO`: Email donde recibirás los mensajes de contacto
+- `EMAIL_FROM`: Email y nombre para el remitente (ej: "Contacto Sniptic <contacto@tudominio.com>")
+- `NEXT_PUBLIC_APP_URL`: URL base de tu aplicación (ej: https://tudominio.com)
+
+## Desarrollo
 
 ```bash
 npm run dev
@@ -29,8 +46,34 @@ To learn more about Next.js, take a look at the following resources:
 
 You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Despliegue en Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Este proyecto está optimizado para ser desplegado en [Vercel](https://vercel.com).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Pasos para desplegar en Vercel
+
+1. Crea una cuenta en [Vercel](https://vercel.com) si aún no tienes una
+2. Importa tu repositorio de GitHub/GitLab/Bitbucket
+3. Configura las siguientes variables de entorno en la configuración del proyecto:
+   - `RESEND_API_KEY`
+   - `EMAIL_TO`
+   - `EMAIL_FROM`
+   - `NEXT_PUBLIC_APP_URL` (usa el dominio asignado por Vercel o tu dominio personalizado)
+4. Despliega la aplicación
+
+### Verificación del dominio en Resend
+
+Para enviar correos desde tu propio dominio:
+
+1. Configura el dominio en [Resend](https://resend.com)
+2. Verifica el dominio siguiendo las instrucciones de Resend
+3. Actualiza la variable `EMAIL_FROM` con tu dominio verificado
+
+### Monitoreo y logs
+
+Una vez desplegada la aplicación, puedes monitorear los logs de API desde el dashboard de Vercel para verificar que los correos se estén enviando correctamente.
+
+## Solución de problemas comunes
+
+- **No se reciben correos**: Verifica que la API key de Resend esté correctamente configurada y que los dominios estén verificados.
+- **Errores en el formulario de contacto**: Verifica los logs en Vercel para identificar posibles errores en la API.

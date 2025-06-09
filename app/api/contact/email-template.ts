@@ -74,7 +74,7 @@ export function generateContactEmail(formData: ContactFormData): string {
               <tr>
                 <td align="center" style="padding: 20px 25px 30px 25px; border-top: 1px solid #e5e7eb;">
                   <p style="font-size: 12px; color: ${STYLES.TEXT_COLOR_SECONDARY}; margin: 0;">
-                    Este mensaje fue enviado desde el formulario de contacto en <a href="https://tu-dominio-sniptic.com" style="color: ${STYLES.BRAND_PRIMARY_COLOR}; text-decoration: none;">tu-dominio-sniptic.com</a>.
+                    Este mensaje fue enviado desde el formulario de contacto en <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://sniptic.com'}" style="color: ${STYLES.BRAND_PRIMARY_COLOR}; text-decoration: none;">${process.env.NEXT_PUBLIC_APP_URL ? new URL(process.env.NEXT_PUBLIC_APP_URL).hostname : 'sniptic.com'}</a>.
                   </p>
                   <p style="font-size: 12px; color: ${STYLES.TEXT_COLOR_SECONDARY}; margin: 5px 0 0 0;">
                     Sniptic &copy; ${new Date().getFullYear()}

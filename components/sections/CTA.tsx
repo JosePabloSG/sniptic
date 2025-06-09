@@ -100,7 +100,7 @@ export default function Cta() {
                 +
               </div>
             </div>
-            <span>500+ desarrolladores ya lo usan</span>
+            <span>Únete a los primeros desarrolladores</span>
           </div>
         </div>
       </div>
