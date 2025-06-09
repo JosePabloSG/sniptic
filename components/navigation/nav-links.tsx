@@ -14,11 +14,11 @@ export function NavLinks({ isMobile, setIsOpen }: NavLinksProps) {
   const [activeSection, setActiveSection] = useState<string>("#hero")
 
   const links = [
-    { href: "#hero", label: "Home" },
-    { href: "#features", label: "Features" },
-    { href: "#about", label: "About" },
-    { href: "#pricing", label: "Pricing" },
-    { href: "#contact", label: "Contact" },
+    { href: "#hero", label: "Inicio" },
+    { href: "#features", label: "Características" },
+    { href: "#about", label: "Acerca de" },
+    { href: "#pricing", label: "Precios" },
+    { href: "#contact", label: "Contacto" },
   ]
 
   useEffect(() => {
