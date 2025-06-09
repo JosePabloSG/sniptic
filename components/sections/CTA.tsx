@@ -19,7 +19,7 @@ export default function Cta() {
             <span className="text-blue-600">const</span>
             <span className="text-purple-600">nextStep</span>
             <span className="text-gray-500">=</span>
-            <span className="text-green-600">&quot;comenzar&quot;</span>
+            <span className="text-green-600">"comenzar"</span>
           </div>
 
           <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight">
@@ -48,7 +48,7 @@ export default function Cta() {
               </div>
 
               <div className="font-mono text-left space-y-2 text-sm">
-                <div className="text-blue-600">{/* Conectando a sniptic.app... */}</div>
+                <div className="text-blue-600">// Conectando a sniptic.app...</div>
                 <div className="text-gray-500">✓ Acceso a la plataforma</div>
                 <div className="text-gray-500">✓ Configurando tu espacio de trabajo</div>
                 <div className="text-green-600">→ ¡Tu dashboard está listo!</div>

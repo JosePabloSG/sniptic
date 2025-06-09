@@ -66,7 +66,7 @@ export default function Hero() {
                 </div>
 
                 <div className="space-y-2 font-mono text-sm">
-                  <div className="text-blue-600">{/* Prompt para refactorizar */}</div>
+                  <div className="text-blue-600">// Prompt para refactorizar</div>
                   <div className="text-purple-600">{"const prompt = `"}</div>
                   <div className="text-gray-600 ml-4">Refactoriza este código para</div>
                   <div className="text-gray-600 ml-4">mejorar su rendimiento y</div>

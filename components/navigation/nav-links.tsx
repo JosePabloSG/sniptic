@@ -10,17 +10,16 @@ interface NavLinksProps {
 }
 
 export function NavLinks({ isMobile, setIsOpen }: NavLinksProps) {
-  // Eliminamos la variable pathname que no se usa
+  const pathname = usePathname()
   const [activeSection, setActiveSection] = useState<string>("#hero")
 
-  // Usamos useMemo para evitar recrear el array en cada render
-  const links = useState([
+  const links = [
     { href: "#hero", label: "Inicio" },
     { href: "#features", label: "Características" },
     { href: "#about", label: "Acerca de" },
     { href: "#pricing", label: "Precios" },
     { href: "#contact", label: "Contacto" },
-  ])[0]
+  ]
 
   useEffect(() => {
     const handleScroll = () => {

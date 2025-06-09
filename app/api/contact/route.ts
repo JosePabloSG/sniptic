@@ -10,7 +10,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Nombre, correo y mensaje son campos obligatorios" }, { status: 400 })
     }
 
-    const { error } = await sendContactEmail(formData)
+    const { data, error } = await sendContactEmail(formData)
 
     if (error) {
       console.error("Error al enviar email:", error)
