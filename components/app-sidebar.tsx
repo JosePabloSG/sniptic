@@ -3,7 +3,6 @@
 import * as React from "react"
 import Image from "next/image"
 import {
-  IconChartBar,
   IconDashboard,
   IconFolder,
   IconHelp,
