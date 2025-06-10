@@ -1,4 +1,4 @@
-import Footer from "@/components/navigation/footer";
+import Footer from "@/components/navigation/footer/footer";
 import { Navbar } from "@/components/navigation/navbar";
 
 export default function LadingPageLayout({
