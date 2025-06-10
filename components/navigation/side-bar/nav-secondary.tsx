@@ -2,12 +2,11 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { IconType } from "@tabler/icons-react"
+import { IconHome } from "@tabler/icons-react"
+type IconType = typeof IconHome
 
 import { cn } from "@/lib/utils"
 import {
-  SidebarGroup,
-  SidebarGroupContent,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
@@ -28,7 +27,7 @@ export function NavSecondary({ items, className, ...props }: NavSecondaryProps) 
       {items.map((item) => (
         <SidebarMenuItem key={item.title}>
           <SidebarMenuButton asChild>
-            <Link 
+            <Link
               href={item.url}
               className={cn(
                 "flex items-center gap-3",
