@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import {
   IconDashboard,
   IconFolder,
@@ -13,9 +14,7 @@ import {
   IconWand,
 } from "@tabler/icons-react"
 
-import { NavMain } from "@/components/nav-main"
-import { NavSecondary } from "@/components/nav-secondary"
-import { NavUser } from "@/components/nav-user"
+
 import {
   Sidebar,
   SidebarContent,
@@ -25,6 +24,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { NavMain } from "./nav-main"
+import { NavSecondary } from "./nav-secondary"
+import { NavUser } from "./nav-user"
 
 const data = {
   user: {
@@ -35,68 +37,59 @@ const data = {
   navMain: [
     {
       title: "Dashboard",
-      url: "#",
+      url: "/dashboard",
       icon: IconDashboard,
     },
     {
       title: "Prompt Builder",
-      url: "#",
+      url: "/dashboard/prompt-builder",
       icon: IconWand,
     },
     {
       title: "Refactorización",
-      url: "#",
+      url: "/dashboard/refactoring",
       icon: IconRefresh,
     },
     {
       title: "Clasificación",
-      url: "#",
+      url: "/dashboard/classification",
       icon: IconTags,
     },
     {
       title: "Proyectos",
-      url: "#",
+      url: "/dashboard/projects",
       icon: IconFolder,
     }
-  ],
-  navClouds: [
-    {
-      title: "Prompt Builder",
-      icon: IconWand,
-      isActive: true,
-      url: "#"
-    },
-    {
-      title: "Refactorización",
-      icon: IconRefresh,
-      url: "#",
-    },
-    {
-      title: "Clasificación",
-      icon: IconTags,
-      url: "#"
-    },
   ],
   navSecondary: [
     {
       title: "Configuración",
-      url: "#",
+      url: "/dashboard/settings",
       icon: IconSettings,
     },
     {
       title: "Ayuda",
-      url: "#",
+      url: "/dashboard/help",
       icon: IconHelp,
     },
     {
       title: "Buscar",
-      url: "#",
+      url: "/dashboard/search",
       icon: IconSearch,
     },
   ]
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname()
+
+  const getNavItems = (items: typeof data.navMain) => {
+    return items.map(item => ({
+      ...item,
+      isActive: pathname === item.url
+    }))
+  }
+
   return (
     <Sidebar collapsible="offcanvas" {...props}>
       <SidebarHeader>
@@ -106,7 +99,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="#">
+              <a href="/dashboard">
                 <Image
                   src="/sniptic.svg"
                   alt="Sniptic Logo"
@@ -121,8 +114,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenu>
       </SidebarHeader>
       <SidebarContent>
-        <NavMain items={data.navMain} />
-        <NavSecondary items={data.navSecondary} className="mt-auto" />
+        <NavMain items={getNavItems(data.navMain)} />
+        <NavSecondary items={getNavItems(data.navSecondary)} className="mt-auto" />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
