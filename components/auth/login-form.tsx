@@ -6,7 +6,7 @@ import Image from "next/image"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Eye, EyeOff, LogIn, KeyRound, AtSign } from "lucide-react"
+import { Eye, EyeOff, KeyRound, AtSign } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -92,7 +92,7 @@ export function LoginForm() {
                         type="email"
                         placeholder="tu@email.com"
                         {...field}
-                        className="pl-12 py-6 text-base rounded-full border-gray-300 focus:border-[#10B981] focus:ring-[#10B981]"
+                        className="pl-12 py-6 text-base rounded-2xl border-gray-300 focus:border-[#10B981] focus:ring-[#10B981]"
                         aria-label="Correo Electrónico"
                       />
                     </FormControl>
@@ -114,7 +114,7 @@ export function LoginForm() {
                         type={showPassword ? "text" : "password"}
                         placeholder="••••••••"
                         {...field}
-                        className="pr-12 pl-12 py-6 text-base rounded-full border-gray-300 focus:border-[#10B981] focus:ring-[#10B981]"
+                        className="pr-12 pl-12 py-6 text-base rounded-2xl border-gray-300 focus:border-[#10B981] focus:ring-[#10B981]"
                         aria-label="Contraseña"
                       />
                     </FormControl>
@@ -122,7 +122,7 @@ export function LoginForm() {
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 text-gray-400 hover:bg-gray-100 rounded-full"
+                      className="absolute right-2 top-1/2 -translate-y-1/2 h-9 w-9 text-gray-400 hover:bg-gray-100 rounded-2xl"
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
@@ -164,14 +164,13 @@ export function LoginForm() {
 
             <Button
               type="submit"
-              className="w-full py-6 text-base font-semibold group rounded-full bg-gray-900 text-white hover:bg-gray-800"
+              className="w-full py-6 text-base font-semibold group rounded-2xl bg-gray-900 text-white hover:bg-gray-800"
               disabled={isLoading}
             >
               {isLoading ? (
                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
               ) : (
                 <>
-                  <LogIn className="w-5 h-5 mr-2 transition-transform group-hover:translate-x-1" />
                   Iniciar Sesión
                 </>
               )}
@@ -192,7 +191,7 @@ export function LoginForm() {
           <Button
             type="button"
             variant="outline"
-            className="w-full py-6 text-base group rounded-full border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+            className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
             disabled={isLoading}
             onClick={() => onSocialLogin('google')}
           >
@@ -208,7 +207,7 @@ export function LoginForm() {
           <Button
             type="button"
             variant="outline"
-            className="w-full py-6 text-base group rounded-full border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+            className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
             disabled={isLoading}
             onClick={() => onSocialLogin('github')}
           >
