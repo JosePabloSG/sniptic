@@ -108,7 +108,7 @@ export default function Pricing() {
               <Button
                 asChild
                 size="lg"
-                className={`mt-10 w-full rounded-full ${
+                className={`mt-10 w-full rounded-2xl ${
                   plan.comingSoon
                     ? "bg-gray-200 text-gray-500 hover:bg-gray-300 cursor-not-allowed"
                     : plan.isFeatured

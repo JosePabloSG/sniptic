@@ -46,7 +46,7 @@ export default function Hero() {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4">
-            <Button size={'lg'} className="rounded-full">Comenzar gratis</Button>
+            <Button size={'lg'} className="rounded-2xl">Comenzar gratis</Button>
           </div>
         </div>
 

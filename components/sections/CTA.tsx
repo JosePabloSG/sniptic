@@ -55,7 +55,7 @@ export default function Cta() {
               </div>
             </div>
 
-            <Button size="lg" className="w-full">
+            <Button size="lg" className="w-full rounded-2xl">
               Comenzar gratis
               <ArrowRight className="mr-2" />
             </Button>

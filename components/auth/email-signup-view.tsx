@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { Separator } from "../ui/separator"
+import { signup } from "@/actions/auth/auth"
 
 const signupFormSchema = z
   .object({
@@ -41,10 +42,16 @@ export function EmailSignupView({ onShowSocialSignup }: EmailSignupViewProps) {
 
   const onSubmit = async (data: SignupFormValues) => {
     setIsLoading(true)
-    console.log("Signup form data (UI only):", data)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-    alert("Intento de creación de cuenta (solo UI)!")
+    try {
+      const formData = new FormData()
+      formData.append('email', data.email)
+      formData.append('password', data.password)
+      await signup(formData)
+    } catch (error) {
+      console.error('Error during signup:', error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
