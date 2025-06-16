@@ -13,7 +13,7 @@ export default function AuthConfirmPage() {
       const { error } = await supabase.auth.getSession();
       if (error) {
         console.error("Error al confirmar la autenticación:", error);
-        router.push("/login?error=auth");
+        router.push("/auth/login?error=auth");
       } else {
         router.push("/dashboard");
       }

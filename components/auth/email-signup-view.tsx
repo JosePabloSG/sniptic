@@ -51,9 +51,7 @@ export function EmailSignupView({ onShowSocialSignup }: EmailSignupViewProps) {
     <div>
       <h1 className="text-2xl font-bold tracking-tight text-gray-900 text-center">Regístrate con tu Email</h1>
       <p className="text-gray-500 mt-2 mb-8 text-center">Completa los siguientes campos.</p>
-
-      <Separator />
-
+      
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField

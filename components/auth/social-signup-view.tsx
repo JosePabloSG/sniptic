@@ -64,7 +64,7 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
 
       <p className="mt-8 text-center text-sm text-gray-500">
         ¿Ya tienes una cuenta?{" "}
-        <Link href="/login" className="font-medium text-[#10B981] hover:text-[#059669] transition-colors">
+        <Link href="/auth/login" className="font-medium text-[#10B981] hover:text-[#059669] transition-colors">
           Inicia sesión
         </Link>
       </p>
