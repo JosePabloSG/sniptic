@@ -31,7 +31,7 @@ export function Navbar() {
           </nav>
         </div>
         <div className="flex items-center gap-2">
-          <div className="hidden md:flex md:items-center md:gap-2">
+          {/* <div className="hidden md:flex md:items-center md:gap-2">
             <Button variant="ghost" size="sm" asChild>
               <Link href="/auth/login">
                 Iniciar sesión
@@ -40,7 +40,7 @@ export function Navbar() {
             <Button asChild className="rounded-2xl">
               <Link href="/auth/sign-up">Registrarse</Link>
             </Button>
-          </div>
+          </div> */}
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild className="md:hidden">
               <Button variant="outline" size="icon" className="h-8 w-8">
@@ -54,14 +54,14 @@ export function Navbar() {
               </SheetHeader>
               <nav className="flex flex-col gap-4 py-6 px-2">
                 <NavLinks isMobile setIsOpen={setIsOpen} />
-                <div className="flex flex-col gap-2 pt-4 px-2">
+                {/* <div className="flex flex-col gap-2 pt-4 px-2">
                   <Button variant="ghost" asChild onClick={() => setIsOpen(false)}>
                     <Link href="/auth/login">Iniciar sesión</Link>
                   </Button>
                   <Button asChild onClick={() => setIsOpen(false)} className="rounded-2xl">
                     <Link href="/auth/sign-up">Registrarse</Link>
                   </Button>
-                </div>
+                </div> */}
               </nav>
             </SheetContent>
           </Sheet>
