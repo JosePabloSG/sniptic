@@ -101,7 +101,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             >
               <a href="/dashboard">
                 <Image
-                  src="/sniptic.svg"
+                  src="/assets/sniptic.svg"
                   alt="Sniptic Logo"
                   width={32}
                   height={32}

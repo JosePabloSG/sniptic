@@ -71,7 +71,7 @@ export function LoginForm() {
       <div className="relative bg-card border border-gray-200/20 rounded-2xl shadow-2xl p-8 backdrop-blur-lg">
         <div className="text-center mb-8">
           <div className="mb-4">
-            <Image src="/sniptic.svg" alt="Sniptic Logo" width={60} height={60} className="mx-auto" />
+            <Image src="/assets/sniptic.svg" alt="Sniptic Logo" width={60} height={60} className="mx-auto" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900">Accede a tu Workspace</h1>
           <p className="text-gray-500 mt-2">Desbloquea tu potencial de código con Sniptic.</p>
@@ -196,7 +196,7 @@ export function LoginForm() {
             onClick={() => onSocialLogin('google')}
           >
             <Image
-              src="/google.svg"
+              src="/icons/google.svg"
               alt="Google Logo"
               width={20}
               height={20}
@@ -212,7 +212,7 @@ export function LoginForm() {
             onClick={() => onSocialLogin('github')}
           >
             <Image
-              src="/github.svg"
+              src="/icons/github.svg"
               alt="GitHub Logo"
               width={20}
               height={20}
