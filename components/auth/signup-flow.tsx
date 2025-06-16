@@ -65,7 +65,7 @@ export function SignupFlow() {
             {view === "social" ? (
               <SocialSignupView onShowEmailSignup={() => setView("email")} />
             ) : (
-              <EmailSignupView onShowSocialSignup={() => setView("social")} />
+              <EmailSignupView />
             )}
           </motion.div>
         </AnimatePresence>
