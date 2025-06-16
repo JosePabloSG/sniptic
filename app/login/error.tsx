@@ -30,7 +30,7 @@ export default function ErrorPage() {
           </h1>
 
           <p className="text-gray-600 text-lg mb-8 max-w-md mx-auto">
-            It seems we've hit a snag. The page you're looking for might have been moved, deleted, or is temporarily
+            It seems we&apos;ve hit a snag. The page you&apos;re looking for might have been moved, deleted, or is temporarily
             unavailable.
           </p>
 

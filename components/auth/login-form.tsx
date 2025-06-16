@@ -55,11 +55,22 @@ export function LoginForm() {
   })
 
   const onSubmit = async (data: LoginFormValues) => {
-    setIsLoading(true)
-    console.log("Datos del formulario (UI only):", data)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsLoading(false)
-    alert("Login attempt (UI only)!")
+    try {
+      setIsLoading(true)
+      const formData = new FormData()
+      formData.append('email', data.email)
+      formData.append('password', data.password)
+      if (data.rememberMe) {
+        formData.append('rememberMe', String(data.rememberMe))
+      }
+
+      await login(formData)
+    } catch (error) {
+      console.error("Error al iniciar sesión:", error)
+      form.setError("root", { message: "Error al iniciar sesión. Inténtalo de nuevo más tarde." })
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   return (
@@ -78,7 +89,7 @@ export function LoginForm() {
         </div>
 
         <Form {...form}>
-          <form action={login} className="space-y-6">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="email"
