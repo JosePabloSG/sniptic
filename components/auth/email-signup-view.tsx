@@ -26,10 +26,10 @@ const signupFormSchema = z
 type SignupFormValues = z.infer<typeof signupFormSchema>
 
 interface EmailSignupViewProps {
-  onShowSocialSignup: () => void
+  onShowSocialSignupAction: () => void
 }
 
-export function EmailSignupView() {
+export function EmailSignupView({ onShowSocialSignupAction }: EmailSignupViewProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
@@ -57,7 +57,7 @@ export function EmailSignupView() {
     <div>
       <h1 className="text-2xl font-bold tracking-tight text-gray-900 text-center">Regístrate con tu Email</h1>
       <p className="text-gray-500 mt-2 mb-8 text-center">Completa los siguientes campos.</p>
-      
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <FormField
@@ -172,6 +172,18 @@ export function EmailSignupView() {
           </Button>
         </form>
       </Form>
+
+      <div className="mt-6 text-center">
+        <p className="text-sm text-gray-500">
+          ¿Prefieres usar redes sociales?{" "}
+          <button
+            onClick={onShowSocialSignupAction}
+            className="font-semibold text-primary hover:text-primary/90"
+          >
+            Regístrate con Google o GitHub
+          </button>
+        </p>
+      </div>
     </div>
   )
 }

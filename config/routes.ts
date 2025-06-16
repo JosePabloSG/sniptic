@@ -10,7 +10,7 @@ export type RouteConfig = {
 export const routes: Record<string, RouteConfig> = {
   // Public routes
   '/': { public: true },
-  '/login': { public: true },
+  '/auth/login': { public: true },
   '/auth/confirm': { public: true },
   // Protected routes (everything else)
   '/dashboard': { auth: true },
