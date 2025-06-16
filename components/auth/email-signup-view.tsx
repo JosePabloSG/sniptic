@@ -29,7 +29,7 @@ interface EmailSignupViewProps {
   onShowSocialSignup: () => void
 }
 
-export function EmailSignupView({ onShowSocialSignup: _ }: EmailSignupViewProps) {
+export function EmailSignupView() {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
