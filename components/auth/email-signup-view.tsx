@@ -4,12 +4,11 @@ import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import * as z from "zod"
-import { Eye, EyeOff, User, AtSign, KeyRound, LogIn, ArrowLeft } from "lucide-react"
+import { Eye, EyeOff, User, AtSign, KeyRound } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Separator } from "../ui/separator"
 import { signup } from "@/actions/auth/auth"
 
 const signupFormSchema = z
@@ -30,7 +29,7 @@ interface EmailSignupViewProps {
   onShowSocialSignup: () => void
 }
 
-export function EmailSignupView({ onShowSocialSignup }: EmailSignupViewProps) {
+export function EmailSignupView({ onShowSocialSignup: _ }: EmailSignupViewProps) {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
