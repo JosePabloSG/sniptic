@@ -18,7 +18,7 @@ export async function login(formData: FormData) {
   const { error } = await supabase.auth.signInWithPassword(data)
 
   if (error) {
-    redirect('/error')
+    redirect('/auth/error')
   }
 
   revalidatePath('/', 'layout')
@@ -38,9 +38,39 @@ export async function signup(formData: FormData) {
   const { error } = await supabase.auth.signUp(data)
 
   if (error) {
-    redirect('/error')
+    redirect('/auth/error')
   }
 
   revalidatePath('/', 'layout')
   redirect('/')
+}
+
+export async function signupWithGoogle() {
+  const supabase = await createClient()
+  
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    }
+  })
+
+  if (error) {
+    redirect('/auth/error')
+  }
+}
+
+export async function signupWithGithub() {
+  const supabase = await createClient()
+  
+  const { error } = await supabase.auth.signInWithOAuth({
+    provider: 'github',
+    options: {
+      redirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`
+    }
+  })
+
+  if (error) {
+    redirect('/auth/error')
+  }
 }

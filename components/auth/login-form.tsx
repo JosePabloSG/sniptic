@@ -13,8 +13,8 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { login } from "@/app/login/actions"
 import { createClient } from "@/utils/supabase/client"
+import { login } from "@/actions/auth/auth"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Por favor, introduce un email válido." }),
@@ -211,7 +211,7 @@ export function LoginForm() {
               alt="Google Logo"
               width={20}
               height={20}
-              className="w-5 h-5 mr-2 transition-transform group-hover:scale-110"
+              className="w-5 h-5 mr-2 transition-transform"
             />
             Google
           </Button>
@@ -227,7 +227,7 @@ export function LoginForm() {
               alt="GitHub Logo"
               width={20}
               height={20}
-              className="w-5 h-5 mr-2 transition-transform group-hover:scale-110"
+              className="w-5 h-5 mr-2 transition-transform"
             />
             GitHub
           </Button>
@@ -235,7 +235,7 @@ export function LoginForm() {
 
         <div className="mt-6 text-center text-sm text-gray-500">
           ¿No tienes una cuenta?{" "}
-          <Link href="/register" className="text-[#10B981] hover:underline font-medium">
+          <Link href="/auth/sign-up" className="text-[#10B981] hover:underline font-medium">
             Regístrate
           </Link>
         </div>

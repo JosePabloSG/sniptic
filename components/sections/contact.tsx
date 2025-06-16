@@ -243,7 +243,7 @@ export default function Contact() {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full h-12 mt-4 rounded-full bg-primary text-white hover:bg-primary/90 transition-colors text-base font-medium"
+                  className="w-full h-12 mt-4 rounded-2xl bg-primary text-white hover:bg-primary/90 transition-colors text-base font-medium"
                 >
                   {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
                   {!isSubmitting && <Send className="ml-2 h-5 w-5 inline-block" />}
