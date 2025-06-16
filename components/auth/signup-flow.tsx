@@ -11,18 +11,12 @@ import { ArrowLeft } from "lucide-react"
 export function SignupFlow() {
   const [view, setView] = useState<"social" | "email">("social")
 
-  const variants = {
-    hidden: { opacity: 0, scale: 0.95 },
-    visible: { opacity: 1, scale: 1 },
-    exit: { opacity: 0, scale: 0.95 },
-  }
-
   return (
     <div className="relative z-10 w-full max-w-md">
       <div className="absolute -top-8 -left-8 w-20 h-20 bg-[#10B981]/10 rounded-full animate-pulse delay-100"></div>
       <div className="absolute -bottom-8 -right-8 w-20 h-20 bg-[#10B981]/10 rounded-full animate-pulse delay-300"></div>
 
-      <motion.div 
+      <motion.div
         className="relative bg-card border border-gray-200/20 rounded-2xl shadow-2xl p-8 backdrop-blur-lg overflow-hidden"
         layout
         transition={{
@@ -53,19 +47,15 @@ export function SignupFlow() {
         <AnimatePresence mode="wait">
           <motion.div
             key={view}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            variants={variants}
-            transition={{ 
-              duration: 0.2,
-              ease: [0.4, 0, 0.2, 1]
-            }}
+            initial={{ opacity: 0, x: view === "social" ? -20 : 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: view === "social" ? 20 : -20 }}
+            transition={{ duration: 0.2 }}
           >
             {view === "social" ? (
               <SocialSignupView onShowEmailSignup={() => setView("email")} />
             ) : (
-              <EmailSignupView />
+              <EmailSignupView onShowSocialSignupAction={() => setView("social")} />
             )}
           </motion.div>
         </AnimatePresence>
