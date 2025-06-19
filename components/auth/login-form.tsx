@@ -15,6 +15,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
 import { createClient } from "@/utils/supabase/client"
 import { login } from "@/actions/auth/auth"
+import Loader from "../ui/loader"
 
 const loginSchema = z.object({
   email: z.string().email({ message: "Por favor, introduce un email válido." }),
@@ -179,10 +180,13 @@ export function LoginForm() {
               disabled={isLoading}
             >
               {isLoading ? (
-                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                <>
+                  <Loader size="md" variant="spinner" color="white" className="mr-2" />
+                  <span>Iniciando sesión</span>
+                </>
               ) : (
                 <>
-                  Iniciar Sesión
+                  <span>Iniciar sesión</span>
                 </>
               )}
             </Button>

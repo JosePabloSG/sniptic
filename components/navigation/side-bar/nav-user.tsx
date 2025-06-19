@@ -28,9 +28,9 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { Skeleton } from "@/components/ui/skeleton"
 import { logout } from "@/actions/auth/auth"
 import { NavUserSkeleton } from "./sidebar-skeleton"
+import Link from "next/link"
 
 export function NavUser({
   user,
@@ -109,15 +109,21 @@ export function NavUser({
             <DropdownMenuGroup>
               <DropdownMenuItem>
                 <IconUserCircle />
-                Cuenta
+                <Link href="/dashboard/profile/account" className="flex items-center gap-2">
+                  Cuenta
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconCreditCard />
-                Facturación
+                <Link href="/dashboard/profile/billing" className="flex items-center gap-2">
+                  Facturación
+                </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <IconNotification />
-                Notificaciones
+                <Link href="/dashboard/profile/notifications" className="flex items-center gap-2">
+                  Notificaciones
+                </Link>
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
