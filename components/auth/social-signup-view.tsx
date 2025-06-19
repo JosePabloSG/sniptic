@@ -4,12 +4,33 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Mail } from "lucide-react"
+import { useState } from "react"
+import { createClient } from "@/utils/supabase/client"
 
 interface SocialSignupViewProps {
   onShowEmailSignup: () => void
 }
 
 export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
+  const [isLoading, setIsLoading] = useState(false)
+
+  const handleSocialSignup = async (provider: 'google' | 'github') => {
+    try {
+      setIsLoading(true)
+      const supabase = createClient()
+      await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/confirm`,
+        },
+      })
+    } catch (error) {
+      console.error(`Error al registrarse con ${provider}:`, error)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
     <div className="flex flex-col items-center text-center">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Crea tu cuenta</h1>
@@ -19,6 +40,7 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
         <Button
           variant="outline"
           className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={() => handleSocialSignup('google')}
         >
           <Image
             src="/icons/google.svg"
@@ -32,6 +54,7 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
         <Button
           variant="outline"
           className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={() => handleSocialSignup('github')}
         >
           <Image
             src="/icons/github.svg"
@@ -41,7 +64,7 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
             className="w-5 h-5 mr-2 transition-transform"
           />
           Continuar con GitHub
-        </Button> 
+        </Button>
       </div>
 
       <div className="relative my-6 w-full">

@@ -28,17 +28,30 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { Skeleton } from "@/components/ui/skeleton"
+import { logout } from "@/actions/auth/auth"
+import { NavUserSkeleton } from "./sidebar-skeleton"
 
 export function NavUser({
   user,
+  loading = false,
 }: {
   user: {
     name: string
     email: string
     avatar: string
   }
+  loading?: boolean
 }) {
   const { isMobile } = useSidebar()
+
+  const handleLogout = async () => {
+    await logout()
+  }
+
+  if (loading) {
+    return <NavUserSkeleton />
+  }
 
   return (
     <SidebarMenu>
@@ -49,9 +62,19 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg grayscale">
+              <Avatar className="h-8 w-8 rounded-lg">
                 <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg">
+                  {user.name
+                    ? user.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .toUpperCase()
+                    : user.email
+                      ? user.email.substring(0, 2).toUpperCase()
+                      : "U"}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-medium">{user.name}</span>
@@ -98,7 +121,7 @@ export function NavUser({
               </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
+            <DropdownMenuItem onClick={handleLogout}>
               <IconLogout />
               Cerrar sesión
             </DropdownMenuItem>
