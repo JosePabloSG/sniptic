@@ -22,13 +22,33 @@ export function DashboardHeader({ className, ...props }: DashboardHeaderProps) {
   // Divide la ruta en segmentos y filtra las cadenas vacías
   const pathSegments = pathname.split("/").filter(Boolean)
 
+  // Función para decodificar y formatear un segmento de URL
+  const formatSegment = (segment: string) => {
+    try {
+      // Decodifica la URL para manejar espacios y caracteres especiales
+      const decoded = decodeURIComponent(segment)
+      // Si el segmento decodificado ya tiene espacios, úsalo tal como está
+      if (decoded.includes(" ")) {
+        return decoded.charAt(0).toUpperCase() + decoded.slice(1)
+      }
+      // Si no tiene espacios, procesa kebab-case
+      return decoded
+        .split("-")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ")
+    } catch (error) {
+      // Si hay error en la decodificación, usa el formato original
+      return segment
+        .split("-")
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(" ")
+    }
+  }
+
   // Determina el título de la página actual para el último elemento del breadcrumb
   const currentPageTitle =
     pathSegments.length > 0
-      ? pathSegments[pathSegments.length - 1]
-        .split("-") // Maneja rutas con kebab-case
-        .map((segment) => segment.charAt(0).toUpperCase() + segment.slice(1))
-        .join(" ")
+      ? formatSegment(pathSegments[pathSegments.length - 1])
       : "Dashboard" // Valor por defecto para la ruta raíz del dashboard
 
   return (
@@ -50,7 +70,7 @@ export function DashboardHeader({ className, ...props }: DashboardHeaderProps) {
           {/* Renderiza los segmentos de ruta intermedios como enlaces */}
           {pathSegments.slice(1, -1).map((segment, index) => {
             const href = `/${pathSegments.slice(0, index + 2).join("/")}`
-            const title = segment.charAt(0).toUpperCase() + segment.slice(1).replace(/-/g, " ")
+            const title = formatSegment(segment)
             return (
               <React.Fragment key={segment}>
                 <BreadcrumbItem className="hidden md:block">
