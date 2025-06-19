@@ -1,6 +1,6 @@
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { Loader2, RotateCw, Circle } from 'lucide-react';
+import { Loader2, RotateCw } from 'lucide-react';
 
 export interface LoaderProps {
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
