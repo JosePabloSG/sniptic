@@ -10,6 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Copy, Check, Code2, Calendar, Search, Filter } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
 import { classificationService } from '@/services/client-classification.service'
+import { HighlightCode } from '@/components/ui/highlight-code'
 import type { SnippetWithRelations } from '@/types/database'
 
 interface ProjectDetailViewProps {
@@ -245,12 +246,14 @@ export function ProjectDetailView({ projectName }: ProjectDetailViewProps) {
                 </div>
 
                 {/* Code Preview */}
-                <div className="bg-muted rounded-md p-3 relative">
-                  <pre className="text-sm overflow-hidden">
-                    <code className="line-clamp-4">
-                      {snippet.code}
-                    </code>
-                  </pre>
+                <div className="rounded-lg overflow-hidden">
+                  <HighlightCode
+                    code={snippet.code.slice(0, 200) + (snippet.code.length > 200 ? '...' : '')}
+                    language={snippet.languages.name.toLowerCase()}
+                    showLineNumbers={false}
+                    showCopyButton={false}
+                    maxHeight="100px"
+                  />
                 </div>
 
                 {/* Footer */}

@@ -1,0 +1,142 @@
+/* Custom highlight.js theme - GitHub Dark style like official example */
+.hljs {
+  background: #0d1117 !important;
+  color: #e6edf3 !important;
+  padding: 1rem;
+}
+
+.hljs-comment,
+.hljs-quote {
+  color: #7d8590 !important;
+  font-style: italic;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-built_in,
+.hljs-name,
+.hljs-tag {
+  color: #ff7b72 !important;
+  /* Red/Pink keywords */
+  font-weight: normal;
+}
+
+.hljs-string,
+.hljs-doctag {
+  color: #a5d6ff !important;
+  /* Light blue strings */
+}
+
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: #d2a8ff !important;
+  /* Purple titles */
+  font-weight: normal;
+}
+
+.hljs-subst {
+  color: #e6edf3 !important;
+}
+
+.hljs-type,
+.hljs-class .hljs-title,
+.hljs-meta {
+  color: #ffa657 !important;
+  /* Orange types */
+}
+
+.hljs-regexp,
+.hljs-link {
+  color: #7ee787 !important;
+  /* Green */
+}
+
+.hljs-symbol,
+.hljs-bullet,
+.hljs-attribute,
+.hljs-number,
+.hljs-literal {
+  color: #79c0ff !important;
+  /* Blue numbers/literals */
+}
+
+.hljs-meta-string {
+  color: #a5d6ff !important;
+}
+
+.hljs-deletion {
+  background: #490202 !important;
+  color: #ff7b72 !important;
+}
+
+.hljs-addition {
+  background: #0f5323 !important;
+  color: #7ee787 !important;
+}
+
+.hljs-emphasis {
+  font-style: italic;
+}
+
+.hljs-strong {
+  font-weight: bold;
+}
+
+/* Variable and property names */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-attr {
+  color: #79c0ff !important;
+  /* Blue variables */
+}
+
+/* Function names */
+.hljs-function .hljs-title {
+  color: #d2a8ff !important;
+  /* Purple functions */
+  font-weight: normal;
+}
+
+/* Parameters */
+.hljs-params {
+  color: #e6edf3 !important;
+}
+
+/* Special highlighting for JSX */
+.hljs-tag .hljs-name {
+  color: #7ee787 !important;
+  /* Green for HTML/JSX tags */
+}
+
+.hljs-tag .hljs-attr {
+  color: #79c0ff !important;
+  /* Blue for attributes */
+}
+
+.hljs-tag .hljs-string {
+  color: #a5d6ff !important;
+  /* Light blue for attribute values */
+}
+
+/* Punctuation */
+.hljs-punctuation {
+  color: #e6edf3 !important;
+}
+
+/* This keyword special case */
+.hljs-built_in {
+  color: #ffa657 !important;
+}
+
+/* Import/export */
+.hljs-keyword.hljs-import,
+.hljs-keyword.hljs-export {
+  color: #ff7b72 !important;
+}
+
+/* Console and other globals */
+.hljs-title.hljs-class_,
+.hljs-title.hljs-function_ {
+  color: #d2a8ff !important;
+}

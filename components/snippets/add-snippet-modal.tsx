@@ -1,4 +1,4 @@
-import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog'
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { Button } from '@/components/ui/button'
 import { AddSnippetForm, type SnippetFormData } from './add-snippet-form'
 import { useSnippetOperations } from '@/hooks/use-snippet-operations'
@@ -61,6 +61,9 @@ export function AddSnippetModal({
         {trigger || defaultTrigger}
       </DialogTrigger>
       <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+        <DialogHeader>
+          <DialogTitle>Agregar Nuevo Snippet</DialogTitle>
+        </DialogHeader>
         <AddSnippetForm
           categories={categories}
           languages={languages}

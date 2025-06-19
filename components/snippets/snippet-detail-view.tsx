@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Copy, Check, Edit, Trash2, Calendar, Tag, User, Code2 } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
 import { classificationService } from '@/services/client-classification.service'
+import { HighlightCode, getLanguageFromExtension } from '@/components/ui/highlight-code'
 import type { SnippetWithRelations } from '@/types/database'
 
 interface SnippetDetailViewProps {
@@ -194,36 +195,21 @@ export function SnippetDetailView({ projectName, snippetId }: SnippetDetailViewP
       </div>
 
       {/* Code */}
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <CardTitle className="flex items-center gap-2">
-              <Code2 className="h-5 w-5" />
-              Código
-            </CardTitle>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleCopyCode}
-              className="gap-2"
-            >
-              {copied ? (
-                <Check className="h-4 w-4" />
-              ) : (
-                <Copy className="h-4 w-4" />
-              )}
-              {copied ? 'Copiado' : 'Copiar'}
-            </Button>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <div className="bg-muted rounded-lg p-4 overflow-x-auto">
-            <pre className="text-sm">
-              <code className="whitespace-pre-wrap">{snippet.code}</code>
-            </pre>
-          </div>
-        </CardContent>
-      </Card>
+      <div>
+        <div className="mb-4">
+          <h2 className="text-xl font-semibold flex items-center gap-2">
+            <Code2 className="h-5 w-5" />
+            Código
+          </h2>
+        </div>
+        <HighlightCode
+          code={snippet.code}
+          language={snippet.languages.name.toLowerCase()}
+          showLineNumbers={true}
+          showCopyButton={true}
+          maxHeight="600px"
+        />
+      </div>
     </div>
   )
 }

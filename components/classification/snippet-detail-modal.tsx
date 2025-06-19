@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Copy, Check, Code2, Calendar, Tag, FolderOpen, FileText } from 'lucide-react'
+import { HighlightCode } from '@/components/ui/highlight-code'
 import type { SnippetWithRelations } from '@/types/database'
 
 interface ProjectGroup {
@@ -212,10 +213,14 @@ export function SnippetDetailModal({ project, isOpen, onClose }: SnippetDetailMo
                           </div>
 
                           {/* Code Preview */}
-                          <div className="bg-muted p-3 rounded-lg">
-                            <pre className="text-sm overflow-x-auto">
-                              <code>{snippet.code.slice(0, 200)}...</code>
-                            </pre>
+                          <div className="rounded-lg overflow-hidden">
+                            <HighlightCode
+                              code={snippet.code.slice(0, 300) + (snippet.code.length > 300 ? '...' : '')}
+                              language={snippet.languages.name.toLowerCase()}
+                              showLineNumbers={false}
+                              showCopyButton={false}
+                              maxHeight="120px"
+                            />
                           </div>
 
                           {/* Metadata */}
@@ -294,15 +299,17 @@ export function SnippetDetailModal({ project, isOpen, onClose }: SnippetDetailMo
 
                   {/* Full Code */}
                   <div className="flex-1 overflow-hidden">
-                    <h4 className="text-sm font-medium mb-2 flex items-center gap-2">
+                    <h4 className="text-sm font-medium mb-3 flex items-center gap-2">
                       <FileText className="h-4 w-4" />
                       Código Completo
                     </h4>
-                    <ScrollArea className="h-[400px] bg-muted rounded-lg p-4">
-                      <pre className="text-sm">
-                        <code>{selectedSnippet.code}</code>
-                      </pre>
-                    </ScrollArea>
+                    <HighlightCode
+                      code={selectedSnippet.code}
+                      language={selectedSnippet.languages.name.toLowerCase()}
+                      showLineNumbers={true}
+                      showCopyButton={true}
+                      maxHeight="400px"
+                    />
                   </div>
 
                   {/* Metadata */}
