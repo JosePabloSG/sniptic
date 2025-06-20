@@ -50,7 +50,6 @@ export function AddSnippetForm({
   })
 
   const [tagInput, setTagInput] = useState('')
-  const [preview, setPreview] = useState('')
   const [activeTab, setActiveTab] = useState('editor')
 
   // Filtrar frameworks basado en el lenguaje seleccionado
@@ -87,39 +86,6 @@ export function AddSnippetForm({
       e.preventDefault()
       handleAddTag()
     }
-  }
-
-  const generateMarkdownPreview = () => {
-    const selectedLanguage = languages.find(l => l.id === formData.language_id)
-    const selectedCategory = categories.find(c => c.id === formData.category_id)
-    const selectedFramework = frameworks.find(f => f.id === formData.framework_id)
-
-    return `# ${formData.title}
-
-${formData.description ? `## Descripción\n${formData.description}\n` : ''}
-
-## Código
-
-\`\`\`${selectedLanguage?.name.toLowerCase() || 'text'}
-${formData.code}
-\`\`\`
-
-## Información
-
-- **Lenguaje:** ${selectedLanguage?.name || 'No especificado'}
-- **Categoría:** ${selectedCategory?.name || 'No especificado'}
-${selectedFramework ? `- **Framework:** ${selectedFramework.name}` : ''}
-${formData.project_name ? `- **Proyecto:** ${formData.project_name}` : ''}
-
-${formData.tags.length > 0 ? `## Tags\n${formData.tags.map(tag => `- ${tag}`).join('\n')}` : ''}
-
----
-*Creado: ${new Date().toLocaleDateString()}*`
-  }
-
-  const handlePreview = () => {
-    setPreview(generateMarkdownPreview())
-    setActiveTab('preview')
   }
 
   const handleSubmit = async (e: React.FormEvent) => {

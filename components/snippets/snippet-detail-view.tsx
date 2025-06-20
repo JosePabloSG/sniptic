@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Copy, Check, Edit, Trash2, Calendar, Tag, User, Code2 } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
 import { classificationService } from '@/services/client-classification.service'
-import { HighlightCode, getLanguageFromExtension } from '@/components/ui/highlight-code'
+import { HighlightCode } from '@/components/ui/highlight-code'
 import type { SnippetWithRelations } from '@/types/database'
 
 interface SnippetDetailViewProps {
@@ -25,7 +25,7 @@ export function SnippetDetailView({ projectName, snippetId }: SnippetDetailViewP
     if (user) {
       loadSnippet()
     }
-  }, [user, snippetId])
+  }, [user, snippetId]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadSnippet = async () => {
     try {

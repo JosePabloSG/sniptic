@@ -45,7 +45,7 @@ export function HighlightCode({
           const result = hljs.highlight(code, { language: detectedLanguage })
           codeRef.current.innerHTML = result.value
           setDetectedLanguage(detectedLanguage)
-        } catch (error) {
+        } catch {
           // Fallback to auto-detection if language is not supported
           const detection = hljs.highlightAuto(code)
           codeRef.current.innerHTML = detection.value
@@ -60,19 +60,9 @@ export function HighlightCode({
       await navigator.clipboard.writeText(code)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch (error) {
-      console.error('Error copying code:', error)
+    } catch {
+      console.error('Error copying code')
     }
-  }
-
-  const addLineNumbers = (html: string) => {
-    const lines = html.split('\n')
-    return lines
-      .map((line, index) => {
-        const lineNumber = index + 1
-        return `<span class="line-number" data-line="${lineNumber}">${line}</span>`
-      })
-      .join('\n')
   }
 
   return (

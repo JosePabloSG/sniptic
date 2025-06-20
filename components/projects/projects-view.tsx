@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react'
 import { ProjectCard } from './project-card'
-import { EmptyState } from '../classification/empty-state'
 import { useUser } from '@/hooks/use-user'
 import { classificationService } from '@/services/client-classification.service'
 import type { SnippetWithRelations } from '@/types/database'
@@ -26,7 +25,7 @@ export function ProjectsView() {
     if (user) {
       loadProjects()
     }
-  }, [user])
+  }, [user]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadProjects = async () => {
     try {

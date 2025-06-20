@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
   IconDashboard,
@@ -117,7 +118,7 @@ export function AppSidebar({
               asChild
               className="data-[slot=sidebar-menu-button]:!p-1.5"
             >
-              <a href="/">
+              <Link href="/">
                 <Image
                   src="/assets/sniptic.svg"
                   alt="Sniptic Logo"
@@ -126,7 +127,7 @@ export function AppSidebar({
                   className="h-8 w-8"
                 />
                 <span className="text-base font-semibold">Sniptic</span>
-              </a>
+              </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>

@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import Link from 'next/link'
 import { ProjectCard } from './project-card'
 import type { SnippetWithRelations } from '@/types/database'

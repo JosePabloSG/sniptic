@@ -14,7 +14,9 @@ import {
 } from "@/components/ui/breadcrumb"
 import { cn } from "@/lib/utils"
 
-interface DashboardHeaderProps extends React.HTMLAttributes<HTMLElement> { }
+interface DashboardHeaderProps extends React.HTMLAttributes<HTMLElement> {
+  // Extending HTMLAttributes for header properties
+}
 
 export function DashboardHeader({ className, ...props }: DashboardHeaderProps) {
   const pathname = usePathname()
@@ -36,7 +38,7 @@ export function DashboardHeader({ className, ...props }: DashboardHeaderProps) {
         .split("-")
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(" ")
-    } catch (error) {
+    } catch {
       // Si hay error en la decodificación, usa el formato original
       return segment
         .split("-")

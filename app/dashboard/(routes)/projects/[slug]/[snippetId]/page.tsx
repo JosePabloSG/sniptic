@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { SnippetDetailView } from '@/components/snippets/snippet-detail-view'
 import { SnippetDetailLoading } from '@/components/snippets/snippet-detail-loading'
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from '@/components/ui/breadcrumb'
 
 interface SnippetPageProps {
   params: {

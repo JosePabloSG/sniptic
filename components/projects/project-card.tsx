@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Code2, Calendar, FolderOpen } from 'lucide-react'
+import { Calendar, FolderOpen } from 'lucide-react'
 import type { SnippetWithRelations } from '@/types/database'
 
 interface ProjectGroup {

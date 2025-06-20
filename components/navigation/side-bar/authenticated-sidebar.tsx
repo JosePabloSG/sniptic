@@ -27,7 +27,7 @@ export function AuthenticatedSidebar({
   loadingComponent,
   ...props
 }: AuthenticatedSidebarProps) {
-  const { user, loading } = useUser()
+  const { loading } = useUser()
 
   // Si hay un componente de carga personalizado
   if (loading && loadingComponent) {

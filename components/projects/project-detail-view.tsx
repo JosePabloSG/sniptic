@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Copy, Check, Code2, Calendar, Search, Filter } from 'lucide-react'
+import { Copy, Check, Code2, Calendar, Search } from 'lucide-react'
 import { useUser } from '@/hooks/use-user'
 import { classificationService } from '@/services/client-classification.service'
 import { HighlightCode } from '@/components/ui/highlight-code'
@@ -31,11 +31,11 @@ export function ProjectDetailView({ projectName }: ProjectDetailViewProps) {
     if (user) {
       loadProjectSnippets()
     }
-  }, [user, projectName])
+  }, [user, projectName]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     filterSnippets()
-  }, [snippets, searchTerm, languageFilter, categoryFilter])
+  }, [snippets, searchTerm, languageFilter, categoryFilter]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const loadProjectSnippets = async () => {
     try {
