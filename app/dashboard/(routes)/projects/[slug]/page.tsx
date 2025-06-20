@@ -2,13 +2,14 @@ import { Suspense } from 'react'
 import { ProjectDetailLoading, ProjectDetailView } from '@/components/projects'
 
 interface ProjectPageProps {
-  params: {
+  params: Promise<{
     slug: string
-  }
+  }>
 }
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-  const projectName = decodeURIComponent(params.slug)
+export default async function ProjectPage({ params }: ProjectPageProps) {
+  const { slug } = await params
+  const projectName = decodeURIComponent(slug)
 
   return (
      <div className="p-8 space-y-6">

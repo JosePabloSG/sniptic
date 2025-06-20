@@ -3,14 +3,15 @@ import { SnippetDetailView } from '@/components/snippets/snippet-detail-view'
 import { SnippetDetailLoading } from '@/components/snippets/snippet-detail-loading'
 
 interface SnippetPageProps {
-  params: {
+  params: Promise<{
     slug: string
     snippetId: string
-  }
+  }>
 }
 
-export default function SnippetPage({ params }: SnippetPageProps) {
-  const projectName = decodeURIComponent(params.slug)
+export default async function SnippetPage({ params }: SnippetPageProps) {
+  const { slug, snippetId } = await params
+  const projectName = decodeURIComponent(slug)
 
   return (
     <div className="p-8 space-y-6">
@@ -21,7 +22,7 @@ export default function SnippetPage({ params }: SnippetPageProps) {
       <Suspense fallback={<SnippetDetailLoading />}>
         <SnippetDetailView
           projectName={projectName}
-          snippetId={params.snippetId}
+          snippetId={snippetId}
         />
       </Suspense>
 

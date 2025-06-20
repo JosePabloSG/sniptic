@@ -14,9 +14,7 @@ import {
 } from "@/components/ui/breadcrumb"
 import { cn } from "@/lib/utils"
 
-interface DashboardHeaderProps extends React.HTMLAttributes<HTMLElement> {
-  // Extending HTMLAttributes for header properties
-}
+type DashboardHeaderProps = React.HTMLAttributes<HTMLElement>
 
 export function DashboardHeader({ className, ...props }: DashboardHeaderProps) {
   const pathname = usePathname()
