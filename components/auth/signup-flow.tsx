@@ -53,7 +53,7 @@ export function SignupFlow() {
             transition={{ duration: 0.2 }}
           >
             {view === "social" ? (
-              <SocialSignupView onShowEmailSignup={() => setView("email")} />
+              <SocialSignupView onShowEmailSignupAction={() => setView("email")} />
             ) : (
               <EmailSignupView onShowSocialSignupAction={() => setView("social")} />
             )}

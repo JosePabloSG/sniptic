@@ -4,12 +4,34 @@ import Link from "next/link"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Mail } from "lucide-react"
+import { useState } from "react"
+import { createClient } from "@/utils/supabase/client"
+import Loader from "@/components/ui/loader"
 
 interface SocialSignupViewProps {
-  onShowEmailSignup: () => void
+  onShowEmailSignupAction: () => void
 }
 
-export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
+export function SocialSignupView({ onShowEmailSignupAction }: SocialSignupViewProps) {
+  const [isLoading, setIsLoading] = useState<string | null>(null)
+
+  const handleSocialSignup = async (provider: 'google' | 'github') => {
+    try {
+      setIsLoading(provider)
+      const supabase = createClient()
+      await supabase.auth.signInWithOAuth({
+        provider,
+        options: {
+          redirectTo: `${window.location.origin}/auth/confirm`,
+        },
+      })
+    } catch (error) {
+      console.error(`Error al registrarse con ${provider}:`, error)
+    } finally {
+      setIsLoading(null)
+    }
+  }
+
   return (
     <div className="flex flex-col items-center text-center">
       <h1 className="text-3xl font-bold tracking-tight text-gray-900">Crea tu cuenta</h1>
@@ -19,29 +41,51 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
         <Button
           variant="outline"
           className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={() => handleSocialSignup('google')}
+          disabled={isLoading !== null}
         >
-          <Image
-            src="/icons/google.svg"
-            alt="Google"
-            width={20}
-            height={20}
-            className="w-5 h-5 mr-2 transition-transform"
-          />
-          Continuar con Google
+          {isLoading === 'google' ? (
+            <>
+              <Loader size="sm" variant="spinner" color="muted" className="mr-2" />
+              Conectando...
+            </>
+          ) : (
+            <>
+              <Image
+                src="/icons/google.svg"
+                alt="Google"
+                width={20}
+                height={20}
+                className="w-5 h-5 mr-2 transition-transform"
+              />
+              Continuar con Google
+            </>
+          )}
         </Button>
         <Button
           variant="outline"
           className="w-full py-6 text-base group rounded-2xl border-gray-300 text-gray-700 hover:bg-gray-50 hover:border-gray-400"
+          onClick={() => handleSocialSignup('github')}
+          disabled={isLoading !== null}
         >
-          <Image
-            src="/icons/github.svg"
-            alt="GitHub"
-            width={20}
-            height={20}
-            className="w-5 h-5 mr-2 transition-transform"
-          />
-          Continuar con GitHub
-        </Button> 
+          {isLoading === 'github' ? (
+            <>
+              <Loader size="sm" variant="spinner" color="muted" className="mr-2" />
+              Conectando...
+            </>
+          ) : (
+            <>
+              <Image
+                src="/icons/github.svg"
+                alt="GitHub"
+                width={20}
+                height={20}
+                className="w-5 h-5 mr-2 transition-transform"
+              />
+              Continuar con GitHub
+            </>
+          )}
+        </Button>
       </div>
 
       <div className="relative my-6 w-full">
@@ -55,7 +99,7 @@ export function SocialSignupView({ onShowEmailSignup }: SocialSignupViewProps) {
 
       <Button
         variant="ghost"
-        onClick={onShowEmailSignup}
+        onClick={onShowEmailSignupAction}
         className="w-full py-6 text-base group rounded-2xl text-[#10B981] hover:bg-[#10B981]/10 hover:text-[#10B981]"
       >
         <Mail className="w-5 h-5 mr-2" />

@@ -22,7 +22,7 @@ export async function login(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/dashboard')
 }
 
 export async function signup(formData: FormData) {
@@ -42,12 +42,12 @@ export async function signup(formData: FormData) {
   }
 
   revalidatePath('/', 'layout')
-  redirect('/')
+  redirect('/dashboard')
 }
 
 export async function signupWithGoogle() {
   const supabase = await createClient()
-  
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
@@ -62,7 +62,7 @@ export async function signupWithGoogle() {
 
 export async function signupWithGithub() {
   const supabase = await createClient()
-  
+
   const { error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
@@ -73,4 +73,17 @@ export async function signupWithGithub() {
   if (error) {
     redirect('/auth/error')
   }
+}
+
+export async function logout() {
+  const supabase = await createClient()
+
+  const { error } = await supabase.auth.signOut()
+
+  if (error) {
+    redirect('/auth/error')
+  }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
 }

@@ -1,3 +1,4 @@
+import { DashboardHeader } from "@/components/layout/header"
 import { AppSidebar } from "@/components/navigation/side-bar/app-sidebar"
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar"
 
@@ -17,6 +18,7 @@ export default function DashboardLayout({
     >
       <AppSidebar variant="inset" />
       <SidebarInset>
+        <DashboardHeader />
         <main className="flex-1 overflow-auto">
           {children}
         </main>
