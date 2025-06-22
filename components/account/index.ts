@@ -1,0 +1,6 @@
+export { ProfileSection } from './profile-section'
+export { AccountIdentitiesSection } from './account-identities-section'
+export { ProvidersSection } from './providers-section'
+export { SecurityInfoSection } from './security-info-section'
+export { DangerZoneSection } from './danger-zone-section'
+export { ConnectionsSection } from './connections-section'
