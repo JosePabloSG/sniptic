@@ -1,7 +1,8 @@
 import { useMutation } from '@tanstack/react-query'
 import { createClient } from '@/utils/supabase/client'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
+import { useEffect } from 'react'
 
 interface OAuthCallbackData {
   code: string
@@ -24,8 +25,9 @@ const handleOAuthCallback = async ({ code }: OAuthCallbackData) => {
 
 export function useOAuthCallback() {
   const router = useRouter()
+  const searchParams = useSearchParams()
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: handleOAuthCallback,
     onSuccess: () => {
       toast.success('Proveedor conectado exitosamente')
@@ -38,4 +40,15 @@ export function useOAuthCallback() {
       router.replace('/dashboard/profile/account')
     },
   })
+
+  // Ejecutar automáticamente si hay código en la URL
+  useEffect(() => {
+    const code = searchParams.get('code')
+
+    if (code && !mutation.isPending && !mutation.isSuccess) {
+      mutation.mutate({ code })
+    }
+  }, [searchParams, mutation])
+
+  return mutation
 }

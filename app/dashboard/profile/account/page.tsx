@@ -1,7 +1,5 @@
 "use client"
 
-import { useEffect } from 'react'
-import { useSearchParams } from 'next/navigation'
 import { useOAuthCallback } from '@/hooks/use-oauth-callback'
 import {
   ProfileSection,
@@ -11,16 +9,7 @@ import {
 } from '@/components/account'
 
 export default function AccountPage() {
-  const searchParams = useSearchParams()
-  const oauthCallback = useOAuthCallback()
-
-  useEffect(() => {
-    const code = searchParams.get('code')
-
-    if (code && !oauthCallback.isPending) {
-      oauthCallback.mutate({ code })
-    }
-  }, [searchParams, oauthCallback])
+  useOAuthCallback()
 
   return (
     <div className="container max-w-4xl mx-auto py-6 space-y-6">
