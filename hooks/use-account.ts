@@ -234,15 +234,23 @@ export function useAccount() {
     try {
       setError(null)
 
-      const { error } = await supabase.auth.updateUser({
-        email: newEmail
+      // Usar nuestra API personalizada para manejar el cambio de email
+      const response = await fetch('/api/account/change-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ newEmail }),
       })
 
-      if (error) throw error
+      const data = await response.json()
 
-      // Refrescar datos
-      await fetchAccountData()
-      return { success: true }
+      if (!response.ok) {
+        throw new Error(data.error || 'Error cambiando email')
+      }
+
+      // No refrescar datos inmediatamente ya que el cambio está pendiente de verificación
+      return { success: true, message: data.message }
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Error cambiando email'
       setError(errorMessage)

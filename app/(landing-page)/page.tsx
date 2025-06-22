@@ -4,11 +4,13 @@ import Cta from "@/components/sections/CTA";
 import Features from "@/components/sections/features";
 import Hero from "@/components/sections/hero";
 import Pricing from "@/components/sections/princing";
+import { AuthHandler } from "@/components/auth/auth-handler";
 
 
 export default function Home() {
   return (
     <div className="min-h-screen  bg-[#F4F4F5]">
+      <AuthHandler />
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <Hero />
         <Features />

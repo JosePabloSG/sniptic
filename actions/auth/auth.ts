@@ -33,6 +33,12 @@ export async function signup(formData: FormData) {
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
+    options: {
+      data: {
+        full_name: formData.get('fullName') as string,
+      },
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000'}/api/auth/callback?type=signup`
+    }
   }
 
   const { error } = await supabase.auth.signUp(data)
@@ -41,8 +47,9 @@ export async function signup(formData: FormData) {
     redirect('/auth/error')
   }
 
+  // En lugar de redirigir al dashboard, redirigir a la página de verificación
   revalidatePath('/', 'layout')
-  redirect('/dashboard')
+  redirect(`/auth/verify-email?email=${encodeURIComponent(data.email)}`)
 }
 
 export async function signupWithGoogle() {

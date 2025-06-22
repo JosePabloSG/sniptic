@@ -99,7 +99,7 @@ export function ProvidersSection() {
       const result = await changeEmail(newEmail)
 
       if (result.success) {
-        toast.success('Te hemos enviado un enlace de confirmación al nuevo email.')
+        toast.success(result.message || 'Te hemos enviado un enlace de confirmación al nuevo email.')
         setIsChangeEmailModalOpen(false)
         setNewEmail('')
       } else {
