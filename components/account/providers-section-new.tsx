@@ -125,7 +125,7 @@ export function ProvidersSection() {
 
     setUnlinkingProvider(provider)
     try {
-      const result = await disconnectProvider(provider.toLowerCase() as 'google' | 'github' | 'email')
+      const result = await disconnectProvider(provider.toLowerCase() as 'google' | 'github')
 
       if (result.success) {
         toast.success(`${provider} ha sido desconectado exitosamente.`)
@@ -190,176 +190,203 @@ export function ProvidersSection() {
         </div>
 
         <div className="space-y-3">
-          {/* Email Provider - Solo mostrar si está conectado */}
-          {connectedAccounts.email && (
-            <div className="group hover:bg-muted/30 transition-colors rounded-lg">
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <MailOpen className="w-5 h-5 text-muted-foreground" />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-sm">Email</span>
+          {/* Email Provider */}
+          <div className="group hover:bg-muted/30 transition-colors rounded-lg">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <MailOpen className="w-5 h-5 text-muted-foreground" />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="font-medium text-sm">Email</span>
+                    {connectedAccounts.email ? (
                       <Badge
                         variant="secondary"
                         className="bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
                       >
                         Conectado
                       </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground truncate">
-                      {user?.email || 'Sin email configurado'}
-                    </p>
+                    ) : (
+                      <Badge variant="outline">No conectado</Badge>
+                    )}
                   </div>
+                  <p className="text-sm text-muted-foreground truncate">
+                    {user?.email || 'Sin email configurado'}
+                  </p>
                 </div>
-                <div className="flex items-center space-x-2">
-                  <Dialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="text-xs"
-                      >
-                        Resetear contraseña
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className="sm:max-w-[425px]">
-                      <DialogHeader>
-                        <DialogTitle>Confirmar contraseña actual</DialogTitle>
-                        <DialogDescription>
-                          Por seguridad, confirma tu contraseña actual antes de enviar el enlace de restablecimiento.
-                        </DialogDescription>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid gap-2">
-                          <Label htmlFor="current-password">Contraseña actual</Label>
-                          <div className="relative">
-                            <Input
-                              id="current-password"
-                              type={showPassword ? "text" : "password"}
-                              value={currentPassword}
-                              onChange={(e) => setCurrentPassword(e.target.value)}
-                              placeholder="Ingresa tu contraseña actual"
-                              disabled={isVerifyingPassword}
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  handleVerifyPassword()
-                                }
-                              }}
-                            />
-                            <Button
-                              type="button"
-                              variant="ghost"
-                              size="sm"
-                              className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
-                              onClick={() => setShowPassword(!showPassword)}
-                              disabled={isVerifyingPassword}
-                            >
-                              {showPassword ? (
-                                <EyeOff className="h-4 w-4" />
-                              ) : (
-                                <Eye className="h-4 w-4" />
-                              )}
-                            </Button>
+              </div>
+              <div className="flex items-center space-x-2">
+                {connectedAccounts.email ? (
+                  <>
+                    <Dialog open={isResetModalOpen} onOpenChange={setIsResetModalOpen}>
+                      <DialogTrigger asChild>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="text-xs"
+                        >
+                          Resetear contraseña
+                        </Button>
+                      </DialogTrigger>
+                      <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                          <DialogTitle>Confirmar contraseña actual</DialogTitle>
+                          <DialogDescription>
+                            Por seguridad, confirma tu contraseña actual antes de enviar el enlace de restablecimiento.
+                          </DialogDescription>
+                        </DialogHeader>
+                        <div className="grid gap-4 py-4">
+                          <div className="grid gap-2">
+                            <Label htmlFor="current-password">Contraseña actual</Label>
+                            <div className="relative">
+                              <Input
+                                id="current-password"
+                                type={showPassword ? "text" : "password"}
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                                placeholder="Ingresa tu contraseña actual"
+                                disabled={isVerifyingPassword}
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    handleVerifyPassword()
+                                  }
+                                }}
+                              />
+                              <Button
+                                type="button"
+                                variant="ghost"
+                                size="sm"
+                                className="absolute right-0 top-0 h-full px-3 py-2 hover:bg-transparent"
+                                onClick={() => setShowPassword(!showPassword)}
+                                disabled={isVerifyingPassword}
+                              >
+                                {showPassword ? (
+                                  <EyeOff className="h-4 w-4" />
+                                ) : (
+                                  <Eye className="h-4 w-4" />
+                                )}
+                              </Button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <DialogFooter>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={handleCloseModal}
-                          disabled={isVerifyingPassword}
-                        >
-                          Cancelar
-                        </Button>
-                        <Button
-                          type="button"
-                          onClick={handleVerifyPassword}
-                          disabled={isVerifyingPassword || !currentPassword.trim()}
-                        >
-                          {isVerifyingPassword ? 'Verificando...' : 'Enviar enlace'}
-                        </Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          onClick={() => setIsChangeEmailModalOpen(true)}
-                          variant="ghost"
-                          size="sm"
-                          className="h-8 w-8 p-0"
-                        >
-                          <SquarePen className="w-4 h-4" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Cambiar email</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                  {connectedCount > 1 && (
+                        <DialogFooter>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            onClick={handleCloseModal}
+                            disabled={isVerifyingPassword}
+                          >
+                            Cancelar
+                          </Button>
+                          <Button
+                            type="button"
+                            onClick={handleVerifyPassword}
+                            disabled={isVerifyingPassword || !currentPassword.trim()}
+                          >
+                            {isVerifyingPassword ? 'Verificando...' : 'Enviar enlace'}
+                          </Button>
+                        </DialogFooter>
+                      </DialogContent>
+                    </Dialog>
                     <TooltipProvider>
                       <Tooltip>
                         <TooltipTrigger asChild>
                           <Button
-                            onClick={() => handleUnlinkProvider('Email')}
+                            onClick={() => setIsChangeEmailModalOpen(true)}
                             variant="ghost"
                             size="sm"
-                            className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
-                            disabled={unlinkingProvider === 'Email'}
+                            className="h-8 w-8 p-0"
                           >
-                            {unlinkingProvider === 'Email' ? (
-                              <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
-                            ) : (
-                              <Unlink className="w-4 h-4" />
-                            )}
+                            <SquarePen className="w-4 h-4" />
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent>
-                          <p>Desconectar Email</p>
+                          <p>Cambiar email</p>
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  )}
-                </div>
+                    {connectedCount > 1 && (
+                      <TooltipProvider>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              onClick={() => handleUnlinkProvider('Email')}
+                              variant="ghost"
+                              size="sm"
+                              className="h-8 w-8 p-0 text-destructive hover:text-destructive hover:bg-destructive/10"
+                              disabled={unlinkingProvider === 'Email'}
+                            >
+                              {unlinkingProvider === 'Email' ? (
+                                <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin" />
+                              ) : (
+                                <Unlink className="w-4 h-4" />
+                              )}
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>Desconectar Email</p>
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    )}
+                  </>
+                ) : (
+                  <Button
+                    onClick={() => {
+                      toast.info('Para conectar Email, necesitas configurar una contraseña. Esto se hará en una próxima actualización.')
+                    }}
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                    disabled={connectingProvider === 'email'}
+                  >
+                    {connectingProvider === 'email' ? 'Conectando...' : 'Conectar'}
+                  </Button>
+                )}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* GitHub Provider - Solo mostrar si está conectado */}
-          {connectedAccounts.github && (
-            <div className="group hover:bg-muted/30 transition-colors rounded-lg">
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <Image
-                      src="/icons/github.svg"
-                      alt="GitHub Icon"
-                      width={20}
-                      height={20}
-                      className="w-5 h-5"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-sm">GitHub</span>
+          {/* GitHub Provider */}
+          <div className="group hover:bg-muted/30 transition-colors rounded-lg">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/icons/github.svg"
+                    alt="GitHub Icon"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="font-medium text-sm">GitHub</span>
+                    {connectedAccounts.github ? (
                       <Badge
                         variant="secondary"
                         className="bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
                       >
                         Conectado
                       </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Sincroniza repos de GitHub a proyectos de Supabase para creación automática de ramas y fusión
-                    </p>
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:border-gray-800"
+                      >
+                        No conectado
+                      </Badge>
+                    )}
                   </div>
+                  <p className="text-sm text-muted-foreground">
+                    Sincroniza repos de GitHub a proyectos de Supabase para creación automática de ramas y fusión
+                  </p>
                 </div>
-                <div className="flex items-center">
+              </div>
+              <div className="flex items-center">
+                {connectedAccounts.github ? (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -378,41 +405,59 @@ export function ProvidersSection() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleConnectProvider('github')}
+                    disabled={connectingProvider === 'github'}
+                  >
+                    {connectingProvider === 'github' ? 'Conectando...' : 'Conectar'}
+                  </Button>
+                )}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Google Provider - Solo mostrar si está conectado */}
-          {connectedAccounts.google && (
-            <div className="group hover:bg-muted/30 transition-colors rounded-lg">
-              <div className="flex items-center justify-between p-4 border rounded-lg">
-                <div className="flex items-center space-x-4">
-                  <div className="flex-shrink-0">
-                    <Image
-                      src="/icons/google.svg"
-                      alt="Google Icon"
-                      width={20}
-                      height={20}
-                      className="w-5 h-5"
-                    />
-                  </div>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <span className="font-medium text-sm">Google</span>
+          {/* Google Provider */}
+          <div className="group hover:bg-muted/30 transition-colors rounded-lg">
+            <div className="flex items-center justify-between p-4 border rounded-lg">
+              <div className="flex items-center space-x-4">
+                <div className="flex-shrink-0">
+                  <Image
+                    src="/icons/google.svg"
+                    alt="Google Icon"
+                    width={20}
+                    height={20}
+                    className="w-5 h-5"
+                  />
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-center space-x-2 mb-1">
+                    <span className="font-medium text-sm">Google</span>
+                    {connectedAccounts.google ? (
                       <Badge
                         variant="secondary"
                         className="bg-green-100 text-green-700 border-green-200 dark:bg-green-900/20 dark:text-green-400 dark:border-green-800"
                       >
                         Conectado
                       </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground">
-                      Accede con tu cuenta de Google
-                    </p>
+                    ) : (
+                      <Badge
+                        variant="secondary"
+                        className="bg-gray-100 text-gray-600 border-gray-200 dark:bg-gray-900/20 dark:text-gray-400 dark:border-gray-800"
+                      >
+                        No conectado
+                      </Badge>
+                    )}
                   </div>
+                  <p className="text-sm text-muted-foreground">
+                    Accede con tu cuenta de Google
+                  </p>
                 </div>
-                <div className="flex items-center">
+              </div>
+              <div className="flex items-center">
+                {connectedAccounts.google ? (
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
@@ -431,37 +476,19 @@ export function ProvidersSection() {
                       </TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
-                </div>
+                ) : (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleConnectProvider('google')}
+                    disabled={connectingProvider === 'google'}
+                  >
+                    {connectingProvider === 'google' ? 'Conectando...' : 'Conectar'}
+                  </Button>
+                )}
               </div>
             </div>
-          )}
-
-          {/* Mensaje cuando no hay proveedores conectados */}
-          {connectedCount === 0 && (
-            <div className="text-center py-8">
-              <p className="text-sm text-muted-foreground mb-4">
-                No tienes proveedores conectados. Esto no debería ocurrir ya que necesitas al menos uno para acceder.
-              </p>
-              <div className="space-x-2">
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleConnectProvider('google')}
-                  disabled={connectingProvider === 'google'}
-                >
-                  {connectingProvider === 'google' ? 'Conectando...' : 'Conectar Google'}
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => handleConnectProvider('github')}
-                  disabled={connectingProvider === 'github'}
-                >
-                  {connectingProvider === 'github' ? 'Conectando...' : 'Conectar GitHub'}
-                </Button>
-              </div>
-            </div>
-          )}
+          </div>
         </div>
       </div>
 

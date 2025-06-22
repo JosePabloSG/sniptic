@@ -85,7 +85,7 @@ export function useAccount() {
       let connectedAccounts = {
         google: false,
         github: false,
-        email: user.email !== null && user.email !== undefined
+        email: false
       }
 
       // Si obtenemos las identidades correctamente, usar esa información
@@ -94,7 +94,7 @@ export function useAccount() {
         connectedAccounts = {
           google: providers.includes('google'),
           github: providers.includes('github'),
-          email: providers.includes('email') || user.email !== null
+          email: providers.includes('email') // Solo si existe la identidad 'email'
         }
       } else {
         // Fallback a app_metadata si no podemos obtener identities
@@ -102,7 +102,7 @@ export function useAccount() {
         connectedAccounts = {
           google: providers.includes('google'),
           github: providers.includes('github'),
-          email: user.email !== null && user.email !== undefined
+          email: providers.includes('email') // Solo si el provider 'email' está en app_metadata
         }
       }
 
@@ -203,7 +203,7 @@ export function useAccount() {
     }
   }
 
-  const disconnectProvider = async (provider: 'google' | 'github') => {
+  const disconnectProvider = async (provider: 'google' | 'github' | 'email') => {
     try {
       setError(null)
 
