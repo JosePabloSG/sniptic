@@ -56,7 +56,7 @@ export function DangerZoneSection() {
         <div className="p-6">
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-semibold text-destructive mb-2">DANGER ZONE</h3>
+              <h3 className="text-lg font-semibold text-destructive mb-2">ZONA DE PELIGRO</h3>
             </div>
 
             <div className="border border-destructive/20 rounded-lg p-4 bg-destructive/5">
@@ -65,17 +65,17 @@ export function DangerZoneSection() {
                   <AlertTriangle className="w-5 h-5 text-destructive" />
                 </div>
                 <div className="flex-1">
-                  <h4 className="font-medium text-destructive mb-2">Request for account deletion</h4>
+                  <h4 className="font-medium text-destructive mb-2">Solicitar eliminación de cuenta</h4>
                   <p className="text-sm text-muted-foreground mb-4">
-                    Deleting your account is permanent and cannot be undone. Your data will be deleted
-                    immediately and cannot be recovered.
+                    Eliminar tu cuenta es permanente y no se puede deshacer. Tus datos serán eliminados
+                    inmediatamente y no se podrán recuperar.
                   </p>
                   <Button
                     onClick={() => setShowDeleteDialog(true)}
                     variant="destructive"
                     size="sm"
                   >
-                    Request to delete account
+                    Solicitar eliminar cuenta
                   </Button>
                 </div>
               </div>

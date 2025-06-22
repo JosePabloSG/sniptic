@@ -1,10 +1,11 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
+import { Skeleton } from '@/components/ui/skeleton'
 import Loader from '@/components/ui/loader'
 import { useAccount } from '@/hooks/use-account'
 import { toast } from 'sonner'
@@ -15,44 +16,54 @@ interface ProfileSectionProps {
 
 export function ProfileSection({ onSaved }: ProfileSectionProps) {
   const { accountData, loading, updateProfile } = useAccount()
-  const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
   const [formData, setFormData] = useState({
-    first_name: '',
-    last_name: ''
+    name: ''
   })
 
   const user = accountData.user
 
-  const handleEdit = () => {
-    setFormData({
-      first_name: user?.user_metadata?.full_name?.split(' ')[0] || user?.first_name || '',
-      last_name: user?.user_metadata?.full_name?.split(' ').slice(1).join(' ') || user?.last_name || ''
-    })
-    setIsEditing(true)
+  // Inicializar formData cuando el usuario esté disponible (solo una vez)
+  useEffect(() => {
+    if (user && !isInitialized) {
+      const fullName = user.user_metadata?.full_name || user.full_name || ''
+      setFormData({
+        name: fullName
+      })
+      setIsInitialized(true)
+    }
+  }, [user, isInitialized])
+
+  // Función para verificar si hay cambios
+  const hasChanges = () => {
+    if (!user) return false
+    const originalName = user.user_metadata?.full_name || user.full_name || ''
+
+    return formData.name !== originalName
   }
 
-  const handleCancel = () => {
-    setIsEditing(false)
-    setFormData({ first_name: '', last_name: '' })
+  const handleReset = () => {
+    if (user) {
+      const fullName = user.user_metadata?.full_name || user.full_name || ''
+      setFormData({
+        name: fullName
+      })
+    }
   }
 
   const handleSave = async () => {
     setIsSaving(true)
     try {
-      const full_name = `${formData.first_name} ${formData.last_name}`.trim()
       const result = await updateProfile({
-        first_name: formData.first_name,
-        last_name: formData.last_name,
-        full_name: full_name || undefined
+        full_name: formData.name || undefined
       })
 
       if (result.success) {
-        setIsEditing(false)
         toast.success('Tu información personal ha sido actualizada correctamente.')
         onSaved?.()
       } else {
-        toast.error(result.error || 'Hubo un problema al actualizar tu perfil.') 
+        toast.error(result.error || 'Hubo un problema al actualizar tu perfil.')
       }
     } finally {
       setIsSaving(false)
@@ -62,9 +73,30 @@ export function ProfileSection({ onSaved }: ProfileSectionProps) {
   if (loading) {
     return (
       <Card className="p-6">
-        <div className="flex items-center space-x-2">
-          <Loader size="sm" />
-          <span className="text-sm text-muted-foreground">Cargando información del perfil...</span>
+        <div className="space-y-6">
+          <div>
+            <Skeleton className="h-6 w-48" />
+            <Skeleton className="h-4 w-64 mt-2" />
+          </div>
+
+          <div className="space-y-4">
+            <div className="grid grid-cols-1 gap-4">
+              <div>
+                <Skeleton className="h-4 w-20 mb-2" />
+                <Skeleton className="h-10 w-full" />
+              </div>
+            </div>
+
+            <div>
+              <Skeleton className="h-4 w-32 mb-2" />
+              <Skeleton className="h-10 w-full" />
+            </div>
+
+            <div className="flex justify-end space-x-2">
+              <Skeleton className="h-9 w-24" />
+              <Skeleton className="h-9 w-20" />
+            </div>
+          </div>
         </div>
       </Card>
     )
@@ -89,69 +121,51 @@ export function ProfileSection({ onSaved }: ProfileSectionProps) {
         </div>
 
         <div className="space-y-4">
-          {!isEditing ? (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Nombre</Label>
-                  <p className="mt-1 text-sm">
-                    {user.user_metadata?.full_name ||
-                      `${user.first_name || ''} ${user.last_name || ''}`.trim() ||
-                      'No especificado'}
-                  </p>
-                </div>
-                <div>
-                  <Label className="text-sm font-medium text-muted-foreground">Correo electrónico</Label>
-                  <p className="mt-1 text-sm">{user.email}</p>
-                </div>
-              </div>
+          <div className="grid grid-cols-1 gap-4">
+            <div>
+              <Label htmlFor="name">Usuario</Label>
+              <Input
+                id="name"
+                value={formData.name}
+                onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                placeholder="Tu nombre o nombre de usuario"
+              />
+            </div>
+          </div>
 
-              <div className="flex justify-end">
-                <Button onClick={handleEdit} variant="outline" size="sm">
-                  Editar perfil
-                </Button>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <Label htmlFor="first_name">Nombre</Label>
-                  <Input
-                    id="first_name"
-                    value={formData.first_name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, first_name: e.target.value }))}
-                    placeholder="Tu nombre"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="last_name">Apellido</Label>
-                  <Input
-                    id="last_name"
-                    value={formData.last_name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, last_name: e.target.value }))}
-                    placeholder="Tu apellido"
-                  />
-                </div>
-              </div>
+          <div>
+            <Label className="text-sm font-medium text-muted-foreground">Correo electrónico</Label>
+            <Input
+              value={user.email}
+              disabled
+              className="bg-muted"
+            />
+          </div>
 
-              <div className="flex justify-end space-x-2">
-                <Button onClick={handleCancel} variant="outline" size="sm" disabled={isSaving}>
-                  Cancelar
-                </Button>
-                <Button onClick={handleSave} size="sm" disabled={isSaving}>
-                  {isSaving ? (
-                    <>
-                      <Loader size="sm" className="mr-2" />
-                      Guardando...
-                    </>
-                  ) : (
-                    'Guardar'
-                  )}
-                </Button>
-              </div>
-            </>
-          )}
+          <div className="flex justify-end space-x-2">
+            <Button
+              onClick={handleReset}
+              variant="outline"
+              size="sm"
+              disabled={isSaving || !hasChanges()}
+            >
+              Restablecer
+            </Button>
+            <Button
+              onClick={handleSave}
+              size="sm"
+              disabled={isSaving || !hasChanges()}
+            >
+              {isSaving ? (
+                <>
+                  <Loader size="sm" className="mr-2" />
+                  Guardando...
+                </>
+              ) : (
+                'Guardar'
+              )}
+            </Button>
+          </div>
         </div>
       </div>
     </Card>
