@@ -14,13 +14,12 @@ import {
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { useAccount } from '@/hooks/use-account'
-import { useToast } from '@/components/ui/toast'
 import { AlertTriangle, Trash2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
 export function DangerZoneSection() {
   const { accountData, deleteAccount } = useAccount()
-  const { addToast } = useToast()
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const [deleteConfirmation, setDeleteConfirmation] = useState('')
   const [isDeleting, setIsDeleting] = useState(false)
@@ -36,21 +35,13 @@ export function DangerZoneSection() {
     try {
       const result = await deleteAccount()
       if (result.success) {
-        addToast({
-          type: 'success',
-          title: 'Cuenta eliminada',
-          description: 'Tu cuenta ha sido eliminada exitosamente.'
-        })
+        toast.success('Cuenta eliminada exitosamente.')
         // Redirigir a la página de inicio después de eliminar la cuenta
         setTimeout(() => {
           router.push('/')
         }, 1500)
       } else {
-        addToast({
-          type: 'error',
-          title: 'Error al eliminar cuenta',
-          description: result.error || 'No se pudo eliminar la cuenta.'
-        })
+        toast.error(result.error || 'No se pudo eliminar la cuenta.')
       }
     } finally {
       setIsDeleting(false)

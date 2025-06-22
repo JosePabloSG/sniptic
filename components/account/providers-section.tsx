@@ -9,19 +9,22 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useAccount } from '@/hooks/use-account'
-import { useToast } from '@/components/ui/toast'
-import { Github, Mail, Chrome, MailOpen, Unlink, AlertTriangle, Eye, EyeOff } from 'lucide-react'
+import { MailOpen, Unlink, AlertTriangle, Eye, EyeOff, SquarePen } from 'lucide-react'
 import Image from 'next/image'
+import { toast } from 'sonner'
 
 export function ProvidersSection() {
-  const { accountData, loading, resetPassword } = useAccount()
-  const { addToast } = useToast()
+  const { accountData, loading, resetPassword, connectProvider, disconnectProvider, changeEmail } = useAccount()
   const [isResetting, setIsResetting] = useState(false)
   const [unlinkingProvider, setUnlinkingProvider] = useState<string | null>(null)
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
   const [isVerifyingPassword, setIsVerifyingPassword] = useState(false)
+  const [isChangeEmailModalOpen, setIsChangeEmailModalOpen] = useState(false)
+  const [newEmail, setNewEmail] = useState('')
+  const [isChangingEmail, setIsChangingEmail] = useState(false)
+  const [connectingProvider, setConnectingProvider] = useState<string | null>(null)
 
   const user = accountData.user
   const connectedAccounts = accountData.connectedAccounts
@@ -36,20 +39,12 @@ export function ProvidersSection() {
     try {
       const result = await resetPassword(user.email)
       if (result.success) {
-        addToast({
-          type: 'success',
-          title: 'Email enviado',
-          description: 'Te hemos enviado un enlace para resetear tu contraseña.'
-        })
+        toast.success('Te hemos enviado un enlace de reseteo a tu email.')
         setIsResetModalOpen(false)
         setCurrentPassword('')
       } else {
         setIsResetModalOpen(false)
-        addToast({
-          type: 'error',
-          title: 'Error al enviar email',
-          description: result.error || 'No se pudo enviar el email de reseteo.'
-        })
+        toast.error(result.error || 'No se pudo enviar el email de reseteo.')
       }
     } finally {
       setIsResetting(false)
@@ -58,11 +53,7 @@ export function ProvidersSection() {
 
   const handleVerifyPassword = async () => {
     if (!currentPassword.trim()) {
-      addToast({
-        type: 'error',
-        title: 'Contraseña requerida',
-        description: 'Por favor ingresa tu contraseña actual.'
-      })
+      toast.error('Por favor ingresa tu contraseña actual.')
       return
     }
 
@@ -77,18 +68,10 @@ export function ProvidersSection() {
         // Si la contraseña es correcta, proceder con el reset
         await handleResetPassword()
       } else {
-        addToast({
-          type: 'error',
-          title: 'Contraseña incorrecta',
-          description: 'La contraseña actual no es correcta.'
-        })
+        toast.error('La contraseña actual no es correcta.')
       }
     } catch (error) {
-      addToast({
-        type: 'error',
-        title: 'Error de verificación',
-        description: 'No se pudo verificar la contraseña. Inténtalo de nuevo.'
-      })
+      toast.error('No se pudo verificar la contraseña. Inténtalo de nuevo.')
     } finally {
       setIsVerifyingPassword(false)
     }
@@ -100,35 +83,76 @@ export function ProvidersSection() {
     setShowPassword(false)
   }
 
+  const handleChangeEmail = async () => {
+    if (!newEmail.trim() || !newEmail.includes('@')) {
+      toast.error('Por favor ingresa un email válido.')
+      return
+    }
+
+    if (newEmail === user?.email) {
+      toast.error('El nuevo email debe ser diferente al actual.')
+      return
+    }
+
+    setIsChangingEmail(true)
+    try {
+      const result = await changeEmail(newEmail)
+
+      if (result.success) {
+        toast.success('Te hemos enviado un enlace de confirmación al nuevo email.')
+        setIsChangeEmailModalOpen(false)
+        setNewEmail('')
+      } else {
+        toast.error(result.error || 'No se pudo procesar el cambio de email.')
+      }
+    } catch (error) {
+      toast.error('No se pudo procesar el cambio de email. Inténtalo de nuevo.')
+    } finally {
+      setIsChangingEmail(false)
+    }
+  }
+
+  const handleCloseEmailModal = () => {
+    setIsChangeEmailModalOpen(false)
+    setNewEmail('')
+  }
+
   const handleUnlinkProvider = async (provider: string) => {
     if (connectedCount <= 1) {
-      addToast({
-        type: 'error',
-        title: 'No se puede desconectar',
-        description: 'Debes mantener al menos un método de acceso conectado.'
-      })
+      toast.error('Debes mantener al menos un método de acceso conectado.')
       return
     }
 
     setUnlinkingProvider(provider)
     try {
-      // Aquí iría la lógica para desconectar el provider
-      // Por ahora simulo la operación
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      const result = await disconnectProvider(provider.toLowerCase() as 'google' | 'github')
 
-      addToast({
-        type: 'success',
-        title: 'Proveedor desconectado',
-        description: `${provider} ha sido desconectado exitosamente.`
-      })
+      if (result.success) {
+        toast.success(`${provider} ha sido desconectado exitosamente.`)
+      } else {
+        toast.error(result.error || 'No se pudo desconectar el proveedor.'  )
+      }
     } catch (error) {
-      addToast({
-        type: 'error',
-        title: 'Error al desconectar',
-        description: 'No se pudo desconectar el proveedor. Inténtalo de nuevo.'
-      })
+      toast.error('No se pudo desconectar el proveedor. Inténtalo de nuevo.')
     } finally {
       setUnlinkingProvider(null)
+    }
+  }
+
+  const handleConnectProvider = async (provider: 'google' | 'github') => {
+    setConnectingProvider(provider)
+    try {
+      const result = await connectProvider(provider)
+
+      if (result.success) {
+        toast.success(`${provider} ha sido conectado exitosamente.`)
+      } else {
+        toast.error(result.error || 'No se pudo conectar el proveedor.')
+      }
+    } catch (error) {
+      toast.error('No se pudo conectar el proveedor. Inténtalo de nuevo.')
+    } finally {
+      setConnectingProvider(null)
     }
   }
 
@@ -261,20 +285,76 @@ export function ProvidersSection() {
                   <Tooltip>
                     <TooltipTrigger asChild>
                       <Button
-                        onClick={() => handleUnlinkProvider('Email')}
+                        onClick={() => setIsChangeEmailModalOpen(true)}
                         variant="ghost"
                         size="sm"
-                        disabled={connectedCount <= 1 || unlinkingProvider === 'Email'}
                         className="h-8 w-8 p-0"
                       >
-                        <Unlink className="w-4 h-4" />
+                        <SquarePen className="w-4 h-4" />
                       </Button>
                     </TooltipTrigger>
                     <TooltipContent>
-                      <p>Desconectar Email</p>
+                      <p>Cambiar email</p>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>
+
+                {/* Modal para cambiar email */}
+                <Dialog open={isChangeEmailModalOpen} onOpenChange={setIsChangeEmailModalOpen}>
+                  <DialogContent className="sm:max-w-[425px]">
+                    <DialogHeader>
+                      <DialogTitle>Cambiar dirección de email</DialogTitle>
+                      <DialogDescription>
+                        Ingresa tu nueva dirección de email. Te enviaremos un enlace de confirmación.
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="grid gap-4 py-4">
+                      <div className="grid gap-2">
+                        <Label htmlFor="current-email">Email actual</Label>
+                        <Input
+                          id="current-email"
+                          type="email"
+                          value={user?.email || ''}
+                          disabled
+                          className="bg-muted"
+                        />
+                      </div>
+                      <div className="grid gap-2">
+                        <Label htmlFor="new-email">Nuevo email</Label>
+                        <Input
+                          id="new-email"
+                          type="email"
+                          value={newEmail}
+                          onChange={(e) => setNewEmail(e.target.value)}
+                          placeholder="nuevo@email.com"
+                          disabled={isChangingEmail}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              handleChangeEmail()
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <DialogFooter>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={handleCloseEmailModal}
+                        disabled={isChangingEmail}
+                      >
+                        Cancelar
+                      </Button>
+                      <Button
+                        type="button"
+                        onClick={handleChangeEmail}
+                        disabled={isChangingEmail || !newEmail.trim()}
+                      >
+                        {isChangingEmail ? 'Enviando...' : 'Cambiar email'}
+                      </Button>
+                    </DialogFooter>
+                  </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>
@@ -337,8 +417,13 @@ export function ProvidersSection() {
                     </Tooltip>
                   </TooltipProvider>
                 ) : (
-                  <Button variant="outline" size="sm">
-                    Conectar
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleConnectProvider('github')}
+                    disabled={connectingProvider === 'github'}
+                  >
+                    {connectingProvider === 'github' ? 'Conectando...' : 'Conectar'}
                   </Button>
                 )}
               </div>
@@ -403,8 +488,13 @@ export function ProvidersSection() {
                     </Tooltip>
                   </TooltipProvider>
                 ) : (
-                  <Button variant="outline" size="sm">
-                    Conectar
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => handleConnectProvider('google')}
+                    disabled={connectingProvider === 'google'}
+                  >
+                    {connectingProvider === 'google' ? 'Conectando...' : 'Conectar'}
                   </Button>
                 )}
               </div>

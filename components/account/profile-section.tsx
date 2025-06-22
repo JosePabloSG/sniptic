@@ -7,7 +7,7 @@ import { Label } from '@/components/ui/label'
 import { Card } from '@/components/ui/card'
 import Loader from '@/components/ui/loader'
 import { useAccount } from '@/hooks/use-account'
-import { useToast } from '@/components/ui/toast'
+import { toast } from 'sonner'
 
 interface ProfileSectionProps {
   onSaved?: () => void
@@ -15,7 +15,6 @@ interface ProfileSectionProps {
 
 export function ProfileSection({ onSaved }: ProfileSectionProps) {
   const { accountData, loading, updateProfile } = useAccount()
-  const { addToast } = useToast()
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [formData, setFormData] = useState({
@@ -50,18 +49,10 @@ export function ProfileSection({ onSaved }: ProfileSectionProps) {
 
       if (result.success) {
         setIsEditing(false)
-        addToast({
-          type: 'success',
-          title: 'Perfil actualizado',
-          description: 'Tu información personal ha sido actualizada correctamente.'
-        })
+        toast.success('Tu información personal ha sido actualizada correctamente.')
         onSaved?.()
       } else {
-        addToast({
-          type: 'error',
-          title: 'Error al actualizar perfil',
-          description: result.error || 'Hubo un problema al actualizar tu perfil.'
-        })
+        toast.error(result.error || 'Hubo un problema al actualizar tu perfil.') 
       }
     } finally {
       setIsSaving(false)

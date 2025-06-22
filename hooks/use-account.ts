@@ -79,16 +79,34 @@ export function useAccount() {
         return
       }
 
-      // Determinar cuentas conectadas basado en los providers
-      const providers = user.app_metadata?.providers || []
-      const connectedAccounts = {
-        google: providers.includes('google'),
-        github: providers.includes('github'),
-        email: providers.includes('email') || user.email_confirmed_at !== null
+      // Obtener identidades del usuario para una detección más precisa
+      const { data: identities, error: identitiesError } = await supabase.auth.getUserIdentities()
+
+      let connectedAccounts = {
+        google: false,
+        github: false,
+        email: user.email !== null && user.email !== undefined
       }
 
-      // Por ahora no obtenemos sesiones ya que requiere privilegios de admin
-      // En una implementación real, esto se haría a través de una API route
+      // Si obtenemos las identidades correctamente, usar esa información
+      if (!identitiesError && identities?.identities) {
+        const providers = identities.identities.map(identity => identity.provider)
+        connectedAccounts = {
+          google: providers.includes('google'),
+          github: providers.includes('github'),
+          email: providers.includes('email') || user.email !== null
+        }
+      } else {
+        // Fallback a app_metadata si no podemos obtener identities
+        const providers = user.app_metadata?.providers || []
+        connectedAccounts = {
+          google: providers.includes('google'),
+          github: providers.includes('github'),
+          email: user.email !== null && user.email !== undefined
+        }
+      }
+
+      console.log('Connected accounts:', connectedAccounts)
 
       setAccountData({
         user: user as UserProfile,
@@ -165,12 +183,80 @@ export function useAccount() {
     }
   }
 
+  const connectProvider = async (provider: 'google' | 'github') => {
+    try {
+      setError(null)
+
+      const { error } = await supabase.auth.linkIdentity({
+        provider: provider,
+        options: {
+          redirectTo: `${window.location.origin}/api/auth/callback?next=/dashboard/profile/account`
+        }
+      })
+
+      if (error) throw error
+      return { success: true }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : `Error conectando ${provider}`
+      setError(errorMessage)
+      return { success: false, error: errorMessage }
+    }
+  }
+
+  const disconnectProvider = async (provider: 'google' | 'github') => {
+    try {
+      setError(null)
+
+      // Obtener las identidades del usuario
+      const { data: identities, error: identitiesError } = await supabase.auth.getUserIdentities()
+      if (identitiesError) throw identitiesError
+
+      // Encontrar la identidad del provider específico
+      const identity = identities?.identities?.find(id => id.provider === provider)
+      if (!identity) {
+        throw new Error(`No se encontró la identidad de ${provider}`)
+      }
+
+      const { error } = await supabase.auth.unlinkIdentity(identity)
+      if (error) throw error
+
+      // Refrescar datos
+      await fetchAccountData()
+      return { success: true }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : `Error desconectando ${provider}`
+      setError(errorMessage)
+      return { success: false, error: errorMessage }
+    }
+  }
+
+  const changeEmail = async (newEmail: string) => {
+    try {
+      setError(null)
+
+      const { error } = await supabase.auth.updateUser({
+        email: newEmail
+      })
+
+      if (error) throw error
+
+      // Refrescar datos
+      await fetchAccountData()
+      return { success: true }
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Error cambiando email'
+      setError(errorMessage)
+      return { success: false, error: errorMessage }
+    }
+  }
+
   useEffect(() => {
     fetchAccountData()
 
     // Escuchar cambios en autenticación
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
+        console.log('Auth state changed:', event)
         if (event === 'SIGNED_OUT') {
           setAccountData({
             user: null,
@@ -182,12 +268,26 @@ export function useAccount() {
             }
           })
         } else if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-          fetchAccountData()
+          // Pequeño delay para asegurar que los datos estén actualizados
+          setTimeout(() => {
+            fetchAccountData()
+          }, 500)
         }
       }
     )
 
-    return () => subscription.unsubscribe()
+    // Listener para refrescar cuando el usuario regrese a la pestaña
+    const handleFocus = () => {
+      console.log('Window focused, refreshing account data')
+      fetchAccountData()
+    }
+
+    window.addEventListener('focus', handleFocus)
+
+    return () => {
+      subscription.unsubscribe()
+      window.removeEventListener('focus', handleFocus)
+    }
   }, [])
 
   return {
@@ -197,6 +297,13 @@ export function useAccount() {
     updateProfile,
     resetPassword,
     deleteAccount,
-    refetch: fetchAccountData
+    connectProvider,
+    disconnectProvider,
+    changeEmail,
+    refetch: fetchAccountData,
+    forceRefresh: () => {
+      console.log('Forcing account data refresh')
+      setTimeout(() => fetchAccountData(), 100)
+    }
   }
 }

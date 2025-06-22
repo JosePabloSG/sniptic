@@ -5,12 +5,11 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { useAccount } from '@/hooks/use-account'
-import { useToast } from '@/components/ui/toast'
 import { Mail } from 'lucide-react'
+import { toast } from 'sonner'
 
 export function AccountIdentitiesSection() {
   const { accountData, loading, resetPassword } = useAccount()
-  const { addToast } = useToast()
   const [isResetting, setIsResetting] = useState(false)
 
   const user = accountData.user
@@ -23,18 +22,10 @@ export function AccountIdentitiesSection() {
     try {
       const result = await resetPassword(user.email)
       if (result.success) {
-        addToast({
-          type: 'success',
-          title: 'Email enviado',
-          description: 'Te hemos enviado un enlace para resetear tu contraseña.'
-        })
+        toast.success('Te hemos enviado un enlace para resetear tu contraseña.')
       } else {
-        addToast({
-          type: 'error',
-          title: 'Error al enviar email',
-          description: result.error || 'No se pudo enviar el email de reseteo.'
-        })
-      }
+        toast.error(result.error || 'No se pudo enviar el email de reseteo.')
+      } 
     } finally {
       setIsResetting(false)
     }
