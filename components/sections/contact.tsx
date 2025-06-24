@@ -1,8 +1,9 @@
 "use client"
-import { Send } from "lucide-react";
-import { Button } from "../ui/button";
-import { useState } from "react";
+import { Send } from "lucide-react"
+import type React from "react"
 
+import { Button } from "../ui/button"
+import { useState } from "react"
 
 export default function Contact() {
   // Estados para manejar el formulario
@@ -10,53 +11,53 @@ export default function Contact() {
     name: "",
     email: "",
     company: "",
-    message: ""
-  });
-  const [isSubmitting, setIsSubmitting] = useState(false);
+    message: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<{
-    type: "success" | "error" | null;
-    message: string;
+    type: "success" | "error" | null
+    message: string
   }>({
     type: null,
-    message: ""
-  });
+    message: "",
+  })
 
   // Manejar cambios en los campos del formulario
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({
+    const { name, value } = e.target
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
-    }));
-  };
+      [name]: value,
+    }))
+  }
 
   // Enviar formulario
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     // Validar datos básicos
     if (!formData.name || !formData.email || !formData.message) {
       setSubmitStatus({
         type: "error",
-        message: "Por favor completa todos los campos obligatorios."
-      });
-      return;
+        message: "Por favor completa todos los campos obligatorios.",
+      })
+      return
     }
 
     try {
-      setIsSubmitting(true);
+      setIsSubmitting(true)
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
-      });
+      })
 
-      const data = await response.json();
+      const data = await response.json()
 
       if (!response.ok) {
-        throw new Error(data.error || "Error al enviar el mensaje");
+        throw new Error(data.error || "Error al enviar el mensaje")
       }
 
       // Éxito: limpiar formulario y mostrar mensaje
@@ -64,23 +65,23 @@ export default function Contact() {
         name: "",
         email: "",
         company: "",
-        message: ""
-      });
+        message: "",
+      })
 
       setSubmitStatus({
         type: "success",
-        message: "¡Mensaje enviado correctamente! Te contactaremos pronto."
-      });
+        message: "¡Mensaje enviado correctamente! Te contactaremos pronto.",
+      })
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error)
       setSubmitStatus({
         type: "error",
-        message: error instanceof Error ? error.message : "Error al enviar el mensaje"
-      });
+        message: error instanceof Error ? error.message : "Error al enviar el mensaje",
+      })
     } finally {
-      setIsSubmitting(false);
+      setIsSubmitting(false)
     }
-  };
+  }
   return (
     <section id="contact" className="relative py-24 sm:py-32">
       {/* Background Elements */}
@@ -137,10 +138,13 @@ export default function Contact() {
               <form className="space-y-6 flex-1 flex flex-col" onSubmit={handleSubmit}>
                 {/* Mensaje de estado */}
                 {submitStatus.type && (
-                  <div className={`p-4 rounded-xl text-sm ${submitStatus.type === "success"
-                      ? "bg-green-50 border border-green-200 text-green-700"
-                      : "bg-red-50 border border-red-200 text-red-700"
-                    }`}>
+                  <div
+                    className={`p-4 rounded-xl text-sm ${
+                      submitStatus.type === "success"
+                        ? "bg-green-50 border border-green-200 text-green-700"
+                        : "bg-red-50 border border-red-200 text-red-700"
+                    }`}
+                  >
                     {submitStatus.message}
                   </div>
                 )}
@@ -245,7 +249,7 @@ export default function Contact() {
                   disabled={isSubmitting}
                   className="w-full h-12 mt-4 rounded-2xl bg-primary text-white hover:bg-primary/90 transition-colors text-base font-medium"
                 >
-                  {isSubmitting ? 'Enviando...' : 'Enviar mensaje'}
+                  {isSubmitting ? "Enviando..." : "Enviar mensaje"}
                   {!isSubmitting && <Send className="ml-2 h-5 w-5 inline-block" />}
                 </Button>
               </form>
@@ -263,8 +267,8 @@ export default function Contact() {
           <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow flex-1">
             <div className="space-y-6 h-full flex flex-col">
               <div className="flex items-center gap-3 pb-4 border-b border-gray-100">
-                <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="w-10 h-10 bg-muted/30 rounded-lg flex items-center justify-center">
+                  <svg className="w-5 h-5 text-muted-foreground" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path
                       strokeLinecap="round"
                       strokeLinejoin="round"
@@ -278,9 +282,14 @@ export default function Contact() {
 
               <div className="space-y-4">
                 {/* Email */}
-                <div className="flex items-start gap-4 p-4 bg-blue-50/50 rounded-xl border border-blue-100">
-                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-4 p-4 bg-muted/10 rounded-xl border border-border/30">
+                  <div className="w-10 h-10 bg-muted/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-muted-foreground"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -302,9 +311,14 @@ export default function Contact() {
                 </div>
 
                 {/* Phone */}
-                <div className="flex items-start gap-4 p-4 bg-green-50/50 rounded-xl border border-green-100">
-                  <div className="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-4 p-4 bg-muted/10 rounded-xl border border-border/30">
+                  <div className="w-10 h-10 bg-muted/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-muted-foreground"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -315,22 +329,22 @@ export default function Contact() {
                   </div>
                   <div>
                     <div className="font-medium text-foreground">Teléfono</div>
-                    <a
-                      href="tel:+50664251906"
-                      className="text-sm text-primary hover:text-primary/80 transition-colors"
-                    >
+                    <a href="tel:+50664251906" className="text-sm text-primary hover:text-primary/80 transition-colors">
                       +506 64251906
                     </a>
-                    <div className="text-xs text-muted-foreground mt-1">
-                      Lunes a viernes, 9:00 AM - 6:00 PM (GMT-6)
-                    </div>
+                    <div className="text-xs text-muted-foreground mt-1">Lunes a viernes, 9:00 AM - 6:00 PM (GMT-6)</div>
                   </div>
                 </div>
 
                 {/* Location */}
-                <div className="flex items-start gap-4 p-4 bg-purple-50/50 rounded-xl border border-purple-100">
-                  <div className="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div className="flex items-start gap-4 p-4 bg-muted/10 rounded-xl border border-border/30">
+                  <div className="w-10 h-10 bg-muted/30 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <svg
+                      className="w-5 h-5 text-muted-foreground"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -356,16 +370,11 @@ export default function Contact() {
           </div>
 
           {/* Quick Response */}
-          <div className="bg-gradient-to-br from-amber-50 to-yellow-50 border border-amber-200 rounded-2xl p-6 shadow-sm flex-1">
+          <div className="bg-background/50 backdrop-blur-sm border border-border/50 rounded-2xl p-6 shadow-sm flex-1">
             <div className="text-center space-y-4 h-full flex flex-col justify-center">
-              <div className="w-14 h-14 bg-amber-100 rounded-xl flex items-center justify-center mx-auto">
-                <svg className="w-7 h-7 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
+              <div className="w-14 h-14 bg-primary/10 rounded-xl flex items-center justify-center mx-auto">
+                <svg className="w-7 h-7 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
                 </svg>
               </div>
               <div>
@@ -374,8 +383,8 @@ export default function Contact() {
                   Nos comprometemos a responder todos los mensajes en menos de 24 horas.
                 </p>
               </div>
-              <div className="inline-flex items-center gap-2 text-xs text-amber-700 bg-amber-100 px-3 py-2 rounded-full">
-                <div className="w-2 h-2 bg-amber-500 rounded-full animate-pulse"></div>
+              <div className="inline-flex items-center gap-2 text-xs text-muted-foreground bg-muted/20 px-3 py-2 rounded-full border border-border/30">
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse"></div>
                 <span>Generalmente respondemos en 2-4 horas</span>
               </div>
             </div>
@@ -383,5 +392,5 @@ export default function Contact() {
         </div>
       </div>
     </section>
-  );
+  )
 }

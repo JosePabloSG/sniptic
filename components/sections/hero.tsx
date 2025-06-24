@@ -17,13 +17,13 @@ export default function Hero() {
           <div className="space-y-6">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-green-300 bg-green-100 text-sm text-primary">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              Nuevo: Prompt Builder contextual con IA
+              Nuevo: Rules para Cursor
             </div>
 
             <div className="space-y-4">
               <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold tracking-tight">
-                <span className="block text-foreground">Snippets</span>
-                <span className="block text-primary">& Prompts</span>
+                <span className="block text-foreground">Snippets, Prompts</span>
+                <span className="block text-primary">& Rules</span>
                 <span className="block text-foreground/80 text-4xl sm:text-5xl lg:text-6xl font-light">
                   potenciados por IA
                 </span>
@@ -35,13 +35,14 @@ export default function Hero() {
                   <div className="w-2 h-0.5 bg-primary/60"></div>
                   <div className="w-1 h-0.5 bg-primary/30"></div>
                 </div>
-                <span>para programadores modernos</span>
+                <span>para programadores modernos con Cursor</span>
               </div>
             </div>
 
             <p className="text-xl text-muted-foreground max-w-lg leading-relaxed">
-              Guarda, organiza y mejora tus snippets de código y prompts de IA. Con refactorización automática y
-              asistentes inteligentes que te ayudan a escribir, entender y reutilizar código.
+              Guarda, organiza y mejora tus snippets de código, prompts de IA y rules para Cursor.
+              Con refactorización automática, asistentes inteligentes y reglas personalizadas que
+              elevan la calidad de tu código.
             </p>
           </div>
 
@@ -62,21 +63,21 @@ export default function Hero() {
                     <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
                     <div className="w-3 h-3 bg-green-500 rounded-full"></div>
                   </div>
-                  <div className="text-xs text-muted-foreground">snippet.ts</div>
+                  <div className="text-xs text-muted-foreground">.cursorrules</div>
                 </div>
 
                 <div className="space-y-2 font-mono text-sm">
-                  <div className="text-blue-600">{`// Prompt para refactorizar`}</div>
-                  <div className="text-purple-600">{"const prompt = `"}</div>
-                  <div className="text-gray-600 ml-4">Refactoriza este código para</div>
-                  <div className="text-gray-600 ml-4">mejorar su rendimiento y</div>
-                  <div className="text-gray-600 ml-4">legibilidad usando ES6+</div>
-                  <div className="text-purple-600">{"`"}</div>
+                  <div className="text-blue-600">{`# Rules para TypeScript`}</div>
+                  <div className="text-gray-600">- Usa const assertions</div>
+                  <div className="text-gray-600">- Prefiere type sobre interface</div>
+                  <div className="text-gray-600">- Valida props con Zod</div>
+                  <div className="text-gray-600">- Componentes funcionales</div>
+                  <div className="text-gray-600">- Tailwind para estilos</div>
                 </div>
 
                 <div className="flex items-center gap-2 pt-2">
-                  <div className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">AI Prompt</div>
-                  <div className="px-2 py-1 bg-blue-100 text-blue-700 text-xs rounded">Refactor</div>
+                  <div className="px-2 py-1 bg-primary/10 text-primary text-xs rounded">Cursor Rules</div>
+                  <div className="px-2 py-1 bg-blue-100 text-blue-600 text-xs rounded">TypeScript</div>
                 </div>
               </div>
 
