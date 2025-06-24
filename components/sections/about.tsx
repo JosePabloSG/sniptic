@@ -30,7 +30,7 @@ export default function About() {
         <div className="max-w-4xl mx-auto">
           <div className="relative">
             {/* Colorful Timeline Line */}
-            <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-blue-200/50 via-purple-300/50 via-green-300/50 to-orange-200/50"></div>
+            <div className="absolute left-8 top-0 bottom-0 w-px bg-gradient-to-b from-blue-200/50 via-purple-300/50 to-orange-200/50"></div>
 
             {/* Timeline Items */}
             <div className="space-y-16">

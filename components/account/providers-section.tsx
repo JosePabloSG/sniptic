@@ -15,7 +15,6 @@ import { toast } from 'sonner'
 
 export function ProvidersSection() {
   const { accountData, loading, resetPassword, connectProvider, disconnectProvider, changeEmail } = useAccount()
-  const [isResetting, setIsResetting] = useState(false)
   const [unlinkingProvider, setUnlinkingProvider] = useState<string | null>(null)
   const [isResetModalOpen, setIsResetModalOpen] = useState(false)
   const [currentPassword, setCurrentPassword] = useState('')
@@ -35,7 +34,6 @@ export function ProvidersSection() {
   const handleResetPassword = async () => {
     if (!user?.email) return
 
-    setIsResetting(true)
     try {
       const result = await resetPassword(user.email)
       if (result.success) {
@@ -47,7 +45,7 @@ export function ProvidersSection() {
         toast.error(result.error || 'No se pudo enviar el email de reseteo.')
       }
     } finally {
-      setIsResetting(false)
+      // Reset completed
     }
   }
 
@@ -70,7 +68,7 @@ export function ProvidersSection() {
       } else {
         toast.error('La contraseña actual no es correcta.')
       }
-    } catch (error) {
+    } catch {
       toast.error('No se pudo verificar la contraseña. Inténtalo de nuevo.')
     } finally {
       setIsVerifyingPassword(false)
@@ -105,7 +103,7 @@ export function ProvidersSection() {
       } else {
         toast.error(result.error || 'No se pudo procesar el cambio de email.')
       }
-    } catch (error) {
+    } catch {
       toast.error('No se pudo procesar el cambio de email. Inténtalo de nuevo.')
     } finally {
       setIsChangingEmail(false)
@@ -132,7 +130,7 @@ export function ProvidersSection() {
       } else {
         toast.error(result.error || 'No se pudo desconectar el proveedor.')
       }
-    } catch (error) {
+    } catch {
       toast.error('No se pudo desconectar el proveedor. Inténtalo de nuevo.')
     } finally {
       setUnlinkingProvider(null)
@@ -149,7 +147,7 @@ export function ProvidersSection() {
       } else {
         toast.error(result.error || 'No se pudo conectar el proveedor.')
       }
-    } catch (error) {
+    } catch {
       toast.error('No se pudo conectar el proveedor. Inténtalo de nuevo.')
     } finally {
       setConnectingProvider(null)

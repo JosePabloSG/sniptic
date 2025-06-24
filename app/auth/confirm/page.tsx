@@ -64,7 +64,7 @@ export default function AuthConfirmPage() {
           // Verificar el email usando el token
           const { error } = await supabase.auth.verifyOtp({
             token_hash,
-            type: type as any,
+            type: type as 'signup' | 'email_change' | 'recovery' | 'invite',
           })
 
           if (error) {
