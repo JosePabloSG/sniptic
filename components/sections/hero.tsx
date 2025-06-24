@@ -1,6 +1,56 @@
+"use client";
 import { Button } from "../ui/button";
+import { useEffect, useState } from "react";
+
+const useTypewriter = (words: string[], speed = 100, deleteSpeed = 50, delayBetweenWords = 2000) => {
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
+
+  useEffect(() => {
+    const currentWord = words[currentWordIndex];
+
+    const timeout = setTimeout(() => {
+      if (isPaused) {
+        setIsPaused(false);
+        setIsDeleting(true);
+        return;
+      }
+
+      if (isDeleting) {
+        if (currentText.length > 0) {
+          setCurrentText(currentText.slice(0, -1));
+        } else {
+          setIsDeleting(false);
+          setCurrentWordIndex((prev) => (prev + 1) % words.length);
+        }
+      } else {
+        if (currentText.length < currentWord.length) {
+          setCurrentText(currentWord.slice(0, currentText.length + 1));
+        } else {
+          setIsPaused(true);
+        }
+      }
+    }, isPaused ? delayBetweenWords : isDeleting ? deleteSpeed : speed);
+
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, isPaused, currentWordIndex, words, speed, deleteSpeed, delayBetweenWords]);
+
+  return currentText;
+};
 
 export default function Hero() {
+  const typewriterWords = [
+    "potenciados por IA",
+    "para Cursor AI",
+    "con GitHub Copilot",
+    "optimizados automáticamente",
+    "inteligentes y adaptativos"
+  ];
+
+  const animatedText = useTypewriter(typewriterWords, 80, 40, 2500);
+
   return (
     <section id="hero" className="relative py-20 sm:py-32">
       <div className="absolute inset-0 -z-10">
@@ -25,7 +75,8 @@ export default function Hero() {
                 <span className="block text-foreground">Snippets, Prompts</span>
                 <span className="block text-primary">& Rules</span>
                 <span className="block text-foreground/80 text-4xl sm:text-5xl lg:text-6xl font-light">
-                  potenciados por IA
+                  {animatedText}
+                  <span className="animate-pulse">|</span>
                 </span>
               </h1>
 
