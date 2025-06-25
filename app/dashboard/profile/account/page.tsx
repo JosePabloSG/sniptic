@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from 'react'
 import { useOAuthCallback } from '@/hooks/use-oauth-callback'
 import {
   ProfileSection,
@@ -8,7 +9,7 @@ import {
   DangerZoneSection
 } from '@/components/account'
 
-export default function AccountPage() {
+function AccountPageContent() {
   useOAuthCallback()
 
   return (
@@ -33,5 +34,13 @@ export default function AccountPage() {
       {/* Danger Zone */}
       <DangerZoneSection />
     </div>
+  )
+}
+
+export default function AccountPage() {
+  return (
+    <Suspense fallback={<div>Cargando...</div>}>
+      <AccountPageContent />
+    </Suspense>
   )
 }
