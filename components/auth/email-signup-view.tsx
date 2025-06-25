@@ -45,6 +45,7 @@ export function EmailSignupView({ onShowSocialSignupAction }: EmailSignupViewPro
       const formData = new FormData()
       formData.append('email', data.email)
       formData.append('password', data.password)
+      formData.append('fullName', data.fullName)
       await signup(formData)
     } catch (error) {
       console.error('Error during signup:', error)

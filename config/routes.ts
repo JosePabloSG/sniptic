@@ -11,7 +11,11 @@ export const routes: Record<string, RouteConfig> = {
   // Public routes
   '/': { public: true },
   '/auth/login': { public: true },
+  '/auth/sign-up': { public: true },
+  '/auth/verify-email': { public: true },
   '/auth/confirm': { public: true },
+  '/auth/auth-code-error': { public: true },
+  '/api/auth/callback': { public: true },
   // Protected routes (everything else)
   '/dashboard': { auth: true },
   '/private': { auth: true },
