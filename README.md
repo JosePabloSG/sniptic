@@ -1,144 +1,147 @@
-# Sniptic
+# Diccionario de Datos – Actividades Evaluadas (classmagic)
 
-![Sniptic Logo](public/sniptic.svg)
+> **Versión:** 1.0  
+> **Ámbito:** Nuevas tablas para evaluaciones (sin secciones).  
+> **Dependencias externas:** `classmagic."Activities"`, `classmagic."StudentActivities"`
 
-## 📋 Sobre el Proyecto
+---
 
-Sniptic es una plataforma moderna para la gestión y optimización de snippets de código. Diseñada para desarrolladores y equipos técnicos, Sniptic facilita la clasificación, búsqueda y mejora de fragmentos de código, permitiéndote construir una biblioteca de código reutilizable y compartible.
+## Tabla: `classmagic.QuestionTypes`
+**Función:** Catálogo de tipos de pregunta.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `smallint` | NO | — | **PK** | Identificador del tipo (1=única, 2=múltiple, 3=desarrollo). |
+| `name` | `varchar(50)` | NO | — | **UNIQUE** | Nombre simbólico del tipo (`multiple_single`, `multiple_multi`, `open_text`). |
 
-### Características Principales
+---
 
-- 🧩 **Gestión de Snippets**: Organiza y categoriza tus fragmentos de código
-- 🔍 **Búsqueda Avanzada**: Encuentra rápidamente el código que necesitas
-- 🛠️ **Refactorización Asistida**: Mejora tu código con sugerencias inteligentes
-- 📊 **Dashboard Personalizado**: Visualiza y gestiona tus proyectos
-- 🔄 **Prompt Builder**: Crea instrucciones precisas para IA generativa
-- 🌐 **Interfaz Moderna**: Diseño intuitivo construido con Next.js y TailwindCSS
+## Tabla: `classmagic.ActivityAssessments`
+**Función:** Metadatos/configuración cuando una actividad es evaluación (1:1 con Activities).
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `ActivityId` | `integer` | NO | — | **PK**, **FK→** `classmagic."Activities"(PK)` | Actividad dueña de la evaluación. |
+| `TotalPoints` | `numeric` | NO | `0` | — | Puntos totales esperados. |
+| `TimeLimitMinutes` | `integer` | SÍ | — | — | Límite de tiempo en minutos. |
+| `AttemptsAllowed` | `smallint` | NO | `1` | — | Intentos permitidos. |
+| `ShuffleQuestions` | `boolean` | NO | `false` | — | Barajar preguntas. |
+| `ShuffleChoices` | `boolean` | NO | `false` | — | Barajar opciones. |
+| `GradingMode` | `varchar(16)` | NO | `'mixed'` | — | `auto`, `manual` o `mixed`. |
 
-## 🚀 Tecnologías Utilizadas
+---
 
-- [Next.js 15](https://nextjs.org/) - Framework React con App Router
-- [React 19](https://react.dev/) - Biblioteca JavaScript para interfaces de usuario
-- [TailwindCSS 4](https://tailwindcss.com/) - Framework CSS utilitario
-- [Radix UI](https://www.radix-ui.com/) - Componentes de UI accesibles
-- [Resend](https://resend.com/) - API para envío de emails
+## Tabla: `classmagic.AssessmentQuestions`
+**Función:** Banco de preguntas por evaluación (sin secciones).
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `bigserial` | NO | autoincrement | **PK** | Identificador de la pregunta. |
+| `ActivityId` | `integer` | NO | — | **FK→** `classmagic."Activities"(PK)` | Evaluación a la que pertenece. |
+| `TypeId` | `smallint` | NO | — | **FK→** `QuestionTypes(id)` | Tipo de pregunta. |
+| `Prompt` | `text` | NO | — | — | Enunciado. |
+| `Points` | `numeric` | NO | `0` | — | Puntaje asignado a la pregunta. |
+| `Required` | `boolean` | NO | `false` | — | Si es obligatoria. |
+| `OrderIndex` | `smallint` | NO | `1` | — | Orden de visualización. |
+| `Feedback` | `text` | SÍ | — | — | Retroalimentación general (opcional). |
 
-## 📥 Instalación y Configuración
+---
 
-### Prerrequisitos
+## Tabla: `classmagic.QuestionChoices`
+**Función:** Opciones de una pregunta de selección.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `bigserial` | NO | autoincrement | **PK** | Identificador de la opción. |
+| `QuestionId` | `bigint` | NO | — | **FK→** `AssessmentQuestions(id)` | Pregunta dueña. |
+| `ChoiceText` | `text` | NO | — | — | Texto de la opción. |
+| `IsCorrect` | `boolean` | NO | `false` | — | Marca si es correcta. |
+| `OrderIndex` | `smallint` | NO | `1` | **UNIQUE** (`QuestionId`,`OrderIndex`) | Orden de la opción por pregunta. |
 
-- Node.js 20.x o superior
-- npm, yarn, pnpm o bun
+---
 
-### Pasos para Instalación
+## Tabla: `classmagic.AssessmentAttempts`
+**Función:** Intentos de los estudiantes en una evaluación.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `uuid` | NO | `gen_random_uuid()` | **PK** | Identificador del intento. |
+| `StudentActivityId` | `uuid` | NO | — | **FK→** `classmagic."StudentActivities"(PK)` | Participación del alumno en esa actividad. |
+| `AttemptNo` | `smallint` | NO | — | **UNIQUE** (`StudentActivityId`,`AttemptNo`) | Número de intento (1..N). |
+| `StartedAt` | `timestamptz` | NO | `now()` | — | Inicio del intento. |
+| `SubmittedAt` | `timestamptz` | SÍ | — | — | Envío del intento. |
+| `Status` | `varchar(16)` | NO | `'in_progress'` | — | Estado: `in_progress`, `submitted`, `graded`, `void`. |
+| `Score` | `numeric` | SÍ | — | — | Puntuación total del intento. |
 
-1. **Clonar el repositorio**
+---
 
-   ```bash
-   git clone https://github.com/tu-usuario/sniptic.git
-   cd sniptic
-   ```
+## Tabla: `classmagic.AttemptQuestionResponses`
+**Función:** Respuesta (por pregunta) de un intento. Supertabla para texto/selección.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `uuid` | NO | `gen_random_uuid()` | **PK** | Identificador de la respuesta. |
+| `AttemptId` | `uuid` | NO | — | **FK→** `AssessmentAttempts(id)` | Intento dueño. |
+| `QuestionId` | `bigint` | NO | — | **FK→** `AssessmentQuestions(id)` | Pregunta respondida. |
+| `AwardedPoints` | `numeric` | SÍ | — | — | Puntos otorgados (auto o manual). |
+| `GradedAt` | `timestamptz` | SÍ | — | — | Fecha/hora de calificación. |
+| `GradedBy` | `uuid` | SÍ | — | — | Usuario docente que calificó (si aplica). |
+| `Feedback` | `text` | SÍ | — | — | Retro por pregunta. |
+| `UNIQUE` | — | — | — | (AttemptId, QuestionId) | Una respuesta por pregunta por intento. |
 
-2. **Instalar dependencias**
+---
 
-   ```bash
-   # Con npm
-   npm install
+## Tabla: `classmagic.ResponseTextAnswers`
+**Función:** Contenido de la respuesta para preguntas de desarrollo.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `ResponseId` | `uuid` | NO | — | **PK**, **FK→** `AttemptQuestionResponses(id)` | Identificador compartido con la respuesta. |
+| `AnswerText` | `text` | NO | — | — | Texto enviado por el estudiante. |
 
-   # Con yarn
-   yarn
+---
 
-   # Con pnpm
-   pnpm install
+## Tabla: `classmagic.ResponseChoiceSelections`
+**Función:** Opciones elegidas para preguntas de selección.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `ResponseId` | `uuid` | NO | — | **PK(**parcial**)**, **FK→** `AttemptQuestionResponses(id)` | Respuesta a la que pertenecen las selecciones. |
+| `ChoiceId` | `bigint` | NO | — | **PK(**parcial**)**, **FK→** `QuestionChoices(id)` | Opción marcada. |
+| **PK compuesta** | — | — | — | **PRIMARY KEY (`ResponseId`,`ChoiceId`)** | Permite 1..N selecciones por respuesta. |
 
-   # Con bun
-   bun install
-   ```
+---
 
-3. **Configurar variables de entorno**
+## Tabla: `classmagic.ResponseFiles` *(opcional)*
+**Función:** Archivos adjuntos a nivel respuesta/pregunta.
+| Campo | Tipo | Nulo | Default | Clave | Descripción |
+|---|---|---|---|---|---|
+| `id` | `bigserial` | NO | autoincrement | **PK** | Identificador del archivo. |
+| `ResponseId` | `uuid` | NO | — | **FK→** `AttemptQuestionResponses(id)` | Respuesta dueña del archivo. |
+| `FileUrl` | `text` | NO | — | — | URL del archivo (CDN/Storage). |
+| `FileName` | `text` | SÍ | — | — | Nombre original. |
+| `FileType` | `text` | SÍ | — | — | Tipo/MIME. |
+| `UploadedAt` | `timestamptz` | NO | `now()` | — | Fecha/hora de subida. |
 
-   ```bash
-   # Copiar el archivo de ejemplo
-   cp .env.example .env.local
+---
 
-   # Editar el archivo con tus propias credenciales
-   ```
+## Índices y restricciones destacadas
+- `idx_assessmentquestions_activity` sobre `AssessmentQuestions(ActivityId)`
+- `idx_questionchoices_question` sobre `QuestionChoices(QuestionId)`
+- `idx_attempts_student` sobre `AssessmentAttempts(StudentActivityId)`
+- `idx_responses_attempt` sobre `AttemptQuestionResponses(AttemptId)`
+- `idx_responses_question` sobre `AttemptQuestionResponses(QuestionId)`
 
-### Variables de Entorno Requeridas
+---
 
-| Variable              | Descripción                                                                        |
-| --------------------- | ---------------------------------------------------------------------------------- |
-| `RESEND_API_KEY`      | API Key de [Resend](https://resend.com) para enviar emails                         |
-| `EMAIL_TO`            | Email donde recibirás los mensajes de contacto                                     |
-| `EMAIL_FROM`          | Email y nombre para el remitente (ej: "Contacto Sniptic <contacto@tudominio.com>") |
-| `NEXT_PUBLIC_APP_URL` | URL base de tu aplicación (ej: https://tudominio.com)                              |
+## Relaciones clave
+- `ActivityAssessments.ActivityId` → `classmagic."Activities"(PK)`  
+- `AssessmentQuestions.ActivityId` → `classmagic."Activities"(PK)`  
+- `AssessmentQuestions.TypeId` → `QuestionTypes.id`  
+- `QuestionChoices.QuestionId` → `AssessmentQuestions.id`  
+- `AssessmentAttempts.StudentActivityId` → `classmagic."StudentActivities"(PK)`  
+- `AttemptQuestionResponses.AttemptId` → `AssessmentAttempts.id`  
+- `AttemptQuestionResponses.QuestionId` → `AssessmentQuestions.id`  
+- `ResponseTextAnswers.ResponseId` → `AttemptQuestionResponses.id`  
+- `ResponseChoiceSelections.(ResponseId, ChoiceId)` → `AttemptQuestionResponses.id`, `QuestionChoices.id`  
+- `ResponseFiles.ResponseId` → `AttemptQuestionResponses.id`
 
-## 🖥️ Desarrollo Local
+---
 
-1. **Iniciar el servidor de desarrollo**
+### Notas de uso
+- Autocalificación de selección: comparar las filas de `ResponseChoiceSelections` con `QuestionChoices.IsCorrect` para asignar `AwardedPoints`.  
+- Desarrollo: calificación manual en `AttemptQuestionResponses.AwardedPoints`, con `GradedBy` y `GradedAt`.  
+- La nota total del intento se guarda en `AssessmentAttempts.Score` (suma de `AwardedPoints`).
 
-   ```bash
-   # Con npm
-   npm run dev
-
-   # Con yarn
-   yarn dev
-
-   # Con pnpm
-   pnpm dev
-
-   # Con bun
-   bun dev
-   ```
-
-2. **Acceder a la aplicación**
-
-   Abre [http://localhost:3000](http://localhost:3000) en tu navegador para ver el resultado.
-
-3. **Estructura del Proyecto**
-
-   - `/app`: Rutas y páginas de la aplicación (App Router de Next.js)
-   - `/components`: Componentes reutilizables UI/UX
-   - `/lib`: Utilidades y configuraciones
-   - `/public`: Archivos estáticos (imágenes, fuentes, etc.)
-
-## 🌐 Despliegue en Producción
-
-Este proyecto está optimizado para ser desplegado en [Vercel](https://vercel.com).
-
-### Pasos para Desplegar en Vercel
-
-1. Crea una cuenta en [Vercel](https://vercel.com) si aún no tienes una
-2. Importa tu repositorio de GitHub/GitLab/Bitbucket
-3. Configura las variables de entorno:
-   - `RESEND_API_KEY`
-   - `EMAIL_TO`
-   - `EMAIL_FROM`
-   - `NEXT_PUBLIC_APP_URL` (usa el dominio asignado por Vercel o tu dominio personalizado)
-4. Despliega la aplicación
-
-### Verificación del Dominio en Resend
-
-Para enviar correos desde tu propio dominio:
-
-1. Configura el dominio en [Resend](https://resend.com)
-2. Verifica el dominio siguiendo las instrucciones de Resend
-3. Actualiza la variable `EMAIL_FROM` con tu dominio verificado
-
-### Monitoreo y Logs
-
-Una vez desplegada la aplicación, puedes monitorear los logs de API desde el dashboard de Vercel para verificar que los correos se estén enviando correctamente.
-
-## 🔧 Solución de Problemas Comunes
-
-- **No se reciben correos**: Verifica que la API key de Resend esté correctamente configurada y que los dominios estén verificados.
-- **Errores en el formulario de contacto**: Verifica los logs en Vercel para identificar posibles errores en la API.
-- **Problemas con TurboRepo**: Si encuentras errores durante el desarrollo con `--turbopack`, intenta ejecutar `next dev` sin esta opción.
-
-## 📜 Licencia
-
-Este proyecto está bajo la licencia MIT. Consulta el archivo LICENSE para más detalles.
-
-## 📞 Contacto
-
-Para preguntas o sugerencias, por favor contacta a través del formulario de contacto en la aplicación.
